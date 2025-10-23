@@ -5,10 +5,12 @@ import CryptoTable from "./CryptoTable";
 import { ArrowRight } from "lucide-react";
 
 export default function ActiveMarkets() {
+  
   const markets = [
     {
       id: 1,
-      image: "https://images.unsplash.com/photo-1616558941964-4d361e799861?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwyfHxiaXRjb2luJTIwY3J5cHRvY3VycmVuY3klMjBnb2xkJTIwY29pbnN8ZW58MHwwfHx8MTc2MTIwMDkwN3ww&ixlib=rb-4.1.0&q=85",
+      image: "/bonk.png",
+      isLocal: true,
       attribution: "Kanchanara on Unsplash",
       title: "Will Bonk Transition to proof-of-stake by Q3 2025",
       yesVotes: 52,
@@ -16,7 +18,8 @@ export default function ActiveMarkets() {
     },
     {
       id: 2,
-      image: "https://images.unsplash.com/photo-1621435410670-0839654680da?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHw1fHxjcnlwdG9jdXJyZW5jeSUyMGhvbG9ncmFwaGljJTIwbmVvbnxlbnwwfDB8fHB1cnBsZXwxNzYxMjAwOTA3fDA&ixlib=rb-4.1.0&q=85",
+      image: "/tether.jpg",
+      isLocal: true,
       attribution: "FlyD on Unsplash",
       title: "Will Price of Tether REACH $1200.00 by 31st December, 2025?",
       yesVotes: 40,
@@ -24,7 +27,8 @@ export default function ActiveMarkets() {
     },
     {
       id: 3,
-      image: "https://images.unsplash.com/photo-1714171056117-f58040d6f5eb?crop=entropy&cs=srgb&fm=jpg&ixid=M3w3NTAwNDR8MHwxfHNlYXJjaHwzfHxjcnlwdG9jdXJyZW5jeSUyMGhvbG9ncmFwaGljJTIwbmVvbnxlbnwwfDB8fHB1cnBsZXwxNzYxMjAwOTA3fDA&ixlib=rb-4.1.0&q=85",
+      image: "/sol.jpg",
+      isLocal: true,
       attribution: "BoliviaInteligente on Unsplash",
       title: "Will Price of SOL exceed $200 by 31st December, 2025?",
       yesVotes: 65,

@@ -5,22 +5,33 @@ import Image from "next/image";
 
 interface MarketCardProps {
   image: string;
-  attribution: string;
+  attribution?: string;
   title: string;
   yesVotes: number;
   noVotes: number;
+  isLocal?: boolean;
 }
 
-export default function MarketCard({ image, attribution, title, yesVotes, noVotes }: MarketCardProps) {
+export default function MarketCard({ image, attribution = "", title, yesVotes, noVotes, isLocal = false }: MarketCardProps) {
   return (
     <div className="relative flex-shrink-0 w-[320px] md:w-[380px] h-[240px] rounded-2xl overflow-hidden group cursor-pointer snap-start">
       {/* Background image */}
       <div className="absolute inset-0">
-        <img 
-          src={image}
-          alt={attribution}
-          className="w-full h-full object-cover"
-        />
+        {isLocal ? (
+          <Image 
+            src={image}
+            alt={attribution || title}
+            fill
+            className="object-cover"
+            sizes="(max-width: 768px) 320px, 380px"
+          />
+        ) : (
+          <img 
+            src={image}
+            alt={attribution || title}
+            className="w-full h-full object-cover"
+          />
+        )}
         {/* Dark overlay gradient */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/50 to-black/20" />
       </div>
