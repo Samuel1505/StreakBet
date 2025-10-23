@@ -19,9 +19,9 @@ export default function Header() {
           <Link href="/create" className="text-white hover:text-cosmic-blue transition-colors">
             Create
           </Link>
-          <a href="#market" className="text-white hover:text-cosmic-blue transition-colors">
-            Market
-          </a>
+          <Link href="/markets" className="text-white hover:text-cosmic-blue transition-colors">
+            Markets
+          </Link>
           <a href="#dashboard" className="text-white hover:text-cosmic-blue transition-colors">
             Dashboard
           </a>
