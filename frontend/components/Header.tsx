@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import Link from "next/link";
 
 export default function Header() {
   return (
@@ -16,14 +16,17 @@ export default function Header() {
         </div>
         
         <div className="hidden md:flex items-center gap-8">
+          <Link href="/create" className="text-white hover:text-cosmic-blue transition-colors">
+            Create
+          </Link>
           <a href="#market" className="text-white hover:text-cosmic-blue transition-colors">
             Market
           </a>
-          <a href="#create" className="text-white hover:text-cosmic-blue transition-colors">
-            Create
+          <a href="#dashboard" className="text-white hover:text-cosmic-blue transition-colors">
+            Dashboard
           </a>
-          <a href="#learn" className="text-white hover:text-cosmic-blue transition-colors">
-            Learn
+          <a href="#lederboard" className="text-white hover:text-cosmic-blue transition-colors">
+            Leaderboard
           </a>
         </div>
         
