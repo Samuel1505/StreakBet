@@ -31,7 +31,7 @@ export default function Header() {
         </div>
         
         <button className="bg-cosmic-blue hover:bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium transition-all hover:shadow-lg hover:shadow-cosmic-blue/50">
-          Connect wallet
+          <appkit-button />
         </button>
       </nav>
     </header>
