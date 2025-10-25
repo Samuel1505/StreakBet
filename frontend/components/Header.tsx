@@ -8,10 +8,15 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto flex items-center justify-between">
         <div className="flex items-center">
           <div className="text-2xl font-bold text-white">
-            <span className="text-cosmic-blue">L</span>
-            <span className="text-cosmic-purple">o</span>
-            <span className="text-cosmic-blue">o</span>
-            <span className="text-cosmic-purple">p</span>
+            <span className="text-cosmic-blue">S</span>
+            <span className="text-cosmic-purple">t</span>
+            <span className="text-cosmic-blue">r</span>
+            <span className="text-cosmic-purple">e</span>
+             <span className="text-cosmic-purple">a</span>
+              <span className="text-cosmic-purple">k</span>
+               <span className="text-cosmic-purple">b</span>
+                <span className="text-cosmic-purple">e</span>
+                 <span className="text-cosmic-purple">t</span>
           </div>
         </div>
         
