@@ -14,7 +14,7 @@ export default function Header() {
             <span className="text-cosmic-purple">e</span>
              <span className="text-cosmic-purple">a</span>
               <span className="text-cosmic-purple">k</span>
-               <span className="text-cosmic-purple">b</span>
+               <span className="text-cosmic-purple">B</span>
                 <span className="text-cosmic-purple">e</span>
                  <span className="text-cosmic-purple">t</span>
           </div>
