@@ -1,5 +1,7 @@
 import type { HardhatUserConfig } from "hardhat/config";
-import "@nomicfoundation/hardhat-toolbox";
+import "@nomicfoundation/hardhat-ethers";
+import "@nomicfoundation/hardhat-verify";
+
 import "dotenv/config";
 
 const { ALCHEMY_SEPOLIA_API_KEY_URL, ACCOUNT_PRIVATE_KEY, ETHERSCAN_API_KEY } =
@@ -11,11 +13,11 @@ const config: HardhatUserConfig = {
     settings: {
       optimizer: {
         enabled: true,
-        runs: 200, // Low runs value to prioritize smaller bytecode
+        runs: 200,
       },
       viaIR: true,
       debug: {
-        revertStrings: "strip", // Remove revert strings to reduce bytecode size
+        revertStrings: "strip",
       },
     },
   },
@@ -24,6 +26,7 @@ const config: HardhatUserConfig = {
       url:
         ALCHEMY_SEPOLIA_API_KEY_URL || "https://sepolia.infura.io/v3/YOUR_KEY",
       accounts: ACCOUNT_PRIVATE_KEY ? [`0x${ACCOUNT_PRIVATE_KEY}`] : [],
+      chainId: 11155111,
     },
     baseSepolia: {
       url: "https://sepolia.base.org",
@@ -31,12 +34,21 @@ const config: HardhatUserConfig = {
       chainId: 84532,
     },
   },
-  etherscan: {
-    apiKey: {
-      sepolia: ETHERSCAN_API_KEY || "",
-      baseSepolia: ETHERSCAN_API_KEY || "",
+  
+ etherscan: {
+  apiKey: ETHERSCAN_API_KEY, // single key now, not per network
+  customChains: [
+    {
+      network: "baseSepolia",
+      chainId: 84532,
+      urls: {
+        apiURL: "https://api-sepolia.basescan.org/api",
+        browserURL: "https://sepolia.basescan.org",
+      },
     },
-  },
+  ],
+},
+
 };
 
 export default config;
