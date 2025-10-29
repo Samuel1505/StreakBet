@@ -30,9 +30,9 @@ export default function Header() {
           <Link href="/dashboard" className="text-white hover:text-cosmic-blue transition-colors">
             Dashboard
           </Link>
-          <a href="#lederboard" className="text-white hover:text-cosmic-blue transition-colors">
+          <Link href="/leaderboard" className="text-white hover:text-cosmic-blue transition-colors">
             Leaderboard
-          </a>
+          </Link>
         </div>
         
         <button className="bg-cosmic-blue hover:bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium transition-all hover:shadow-lg hover:shadow-cosmic-blue/50">
