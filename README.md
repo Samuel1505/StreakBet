@@ -5,7 +5,7 @@
 ![Show Image](#)
 ![Show Image](#)
 
-## Contract Address: 0xc2Dc300E524Cb9Ee18887E7c2333D24403dF076A
+## Contract Address: 0xbc371b61052B4811424643cA41E9A4aFC94dc58e
 
 **StreakBet** is the first prediction market that rewards consistency through gamified streaks.  
 Build winning streaks to earn prize multipliers up to **2x**, compete on global leaderboards, and turn your prediction accuracy into a daily habit.
