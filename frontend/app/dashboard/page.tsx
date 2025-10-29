@@ -176,21 +176,23 @@ export default function DashboardPage() {
   };
 
   const generateActivities = (bets: ActiveBet[]): RecentActivity[] => {
-    return bets.slice(0, 10).map((bet) => {
-      const position = bet.selectedOption as "Yes" | "No";
-      return {
-        id: bet.id,
-        type: bet.status === "won" ? "bet_won" : bet.status === "lost" ? "bet_lost" : "bet_placed",
-        marketQuestion: bet.question,
-        amount: bet.status === "won" && bet.prizeAmount 
+  return bets.slice(0, 10).map((bet) => {
+    const position = bet.selectedOption as "Yes" | "No";
+    return {
+      id: bet.id,
+      type: bet.status === "won" ? "bet_won" : bet.status === "lost" ? "bet_lost" : "bet_placed",
+      marketQuestion: bet.question,
+      amount: parseFloat(
+        bet.status === "won" && bet.prizeAmount 
           ? bet.prizeAmount 
-          : bet.entryFee,
-        timestamp: bet.timestamp,
-        position,
-        currency: "ETH",
-      };
-    });
-  };
+          : bet.entryFee
+      ),
+      timestamp: bet.timestamp,
+      position,
+      currency: "ETH",
+    };
+  });
+};
 
   const activeBetsOnly = activeBets.filter(bet => bet.status === "active" || bet.status === "closed");
   const winRate = userStats && userStats.totalPredictions > 0
