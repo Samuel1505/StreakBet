@@ -1,6 +1,6 @@
 import PrizePoolPredictionABI from "./Prediction.json";
 
 export const PrizePredictionContract = {
-    address: "0xc2Dc300E524Cb9Ee18887E7c2333D24403dF076A",
+    address: "0xbc371b61052B4811424643cA41E9A4aFC94dc58e",
     abi: PrizePoolPredictionABI,
 }

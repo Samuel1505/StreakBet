@@ -1,8 +1,8 @@
-export const formatCurrency = (amount: number, currency: string = "CORE"): string => {
+export const formatCurrency = (amount: number, currency: string = "ETH"): string => {
   return `${amount.toFixed(2)} ${currency}`;
 };
 
-export const formatLargeCurrency = (amount: number, currency: string = "CORE"): string => {
+export const formatLargeCurrency = (amount: number, currency: string = "ETH"): string => {
   return `${amount.toFixed(9)} ${currency}`;
 };
 

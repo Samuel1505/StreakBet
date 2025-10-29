@@ -5,7 +5,7 @@ interface FormFieldProps {
   placeholder: string;
   value: string;
   onChange: (value: string) => void;
-  type?: "text" | "date";
+  type?: "text" | "date" | "datetime-local";
 }
 
 export default function FormField({
