@@ -8,6 +8,7 @@ interface StatCardProps {
   icon: ReactNode;
   iconColor: string;
   iconBgColor: string;
+  subtitle?: string;
 }
 
 export default function StatCard({
@@ -16,6 +17,7 @@ export default function StatCard({
   icon,
   iconColor,
   iconBgColor,
+  subtitle,
 }: StatCardProps) {
   return (
     <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-white/20 transition-all">
