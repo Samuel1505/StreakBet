@@ -3,10 +3,14 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import Header from "@/components/Header";
-import StatCard from "@/components/dashboard/StatCard";
+import EnhancedStatCard from "@/components/dashboard/EnhancedStatCard";
 import TabNavigation from "@/components/dashboard/TabNavigation";
 import ActivityItem from "@/components/dashboard/ActivityItem";
-import { Target, Trophy, DollarSign, Wallet, TrendingUp, Award } from "lucide-react";
+import BetCard from "@/components/dashboard/BetCard";
+import AchievementCard from "@/components/dashboard/AchievementCard";
+import EmptyState from "@/components/dashboard/EmptyState";
+import ProgressRing from "@/components/dashboard/ProgressRing";
+import { Target, Trophy, DollarSign, Wallet, TrendingUp, Award, Sparkles } from "lucide-react";
 import type { DashboardTab, RecentActivity } from "./types";
 import { PrizePredictionContract } from "../../app/ABIs/index";
 import PrizePoolPredictionABI from "../../app/ABIs/Prediction.json";
@@ -224,17 +228,23 @@ export default function DashboardPage() {
       <main className="relative z-10 pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
-          <div className="mb-8">
-            <h1 className="text-5xl md:text-6xl font-bold text-white mb-3 text-glow">
-              Dashboard
-            </h1>
-            <p className="text-text-muted text-lg">
+          <div className="mb-12">
+            <div className="flex items-center gap-3 mb-4">
+              <Sparkles className="w-8 h-8 text-cosmic-purple" />
+              <h1 className="text-5xl md:text-6xl font-bold text-white text-glow">
+                Dashboard
+              </h1>
+            </div>
+            <p className="text-text-muted text-lg mb-2">
               Track your predictions and earnings
             </p>
             {userAddress && (
-              <p className="text-text-muted text-sm mt-2 font-mono">
-                {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
-              </p>
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
+                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                <p className="text-text-muted text-sm font-mono">
+                  {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
+                </p>
+              </div>
             )}
           </div>
 
@@ -247,86 +257,115 @@ export default function DashboardPage() {
           {/* Statistics Cards */}
           {userStats && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              <StatCard
+              <EnhancedStatCard
                 title="Total Predictions"
                 value={userStats.totalPredictions.toString()}
                 icon={<Target className="w-8 h-8" />}
                 iconColor="text-cosmic-purple"
                 iconBgColor="bg-cosmic-purple/20"
+                gradient="from-cosmic-purple to-purple-600"
               />
-              <StatCard
+              <EnhancedStatCard
                 title="Win Rate"
                 value={`${Math.round(winRate)}%`}
                 subtitle={`${userStats.correctPredictions} / ${userStats.totalPredictions} correct`}
                 icon={<Trophy className="w-8 h-8" />}
-                iconColor="text-green-400"
-                iconBgColor="bg-green-400/20"
+                iconColor="text-emerald-400"
+                iconBgColor="bg-emerald-400/20"
+                gradient="from-emerald-500 to-green-600"
               />
-              <StatCard
+              <EnhancedStatCard
                 title="Total Winnings"
                 value={`${parseFloat(userStats.totalWinnings).toFixed(4)} ETH`}
                 icon={<DollarSign className="w-8 h-8" />}
                 iconColor="text-yellow-400"
                 iconBgColor="bg-yellow-400/20"
+                gradient="from-yellow-500 to-orange-500"
               />
-              <StatCard
+              <EnhancedStatCard
                 title="Wallet Balance"
                 value={`${parseFloat(userStats.walletBalance).toFixed(4)} ETH`}
                 icon={<Wallet className="w-8 h-8" />}
                 iconColor="text-cosmic-blue"
                 iconBgColor="bg-cosmic-blue/20"
+                gradient="from-cosmic-blue to-blue-600"
               />
             </div>
           )}
 
-          {/* Additional Stats Row */}
+          {/* Performance Overview */}
           {userStats && (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-orange-400/20">
-                    <TrendingUp className="w-6 h-6 text-orange-400" />
+            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 mb-12">
+              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                <TrendingUp className="w-6 h-6 text-cosmic-purple" />
+                Performance Overview
+              </h2>
+              
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                {/* Current Streak */}
+                <div className="group relative bg-gradient-to-br from-orange-500/10 to-orange-600/5 border border-orange-500/20 rounded-2xl p-6 hover:border-orange-500/40 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="p-3 rounded-xl bg-orange-400/20 group-hover:scale-110 transition-transform duration-300">
+                      <TrendingUp className="w-6 h-6 text-orange-400" />
+                    </div>
+                    {userStats.currentStreak > 0 && (
+                      <span className="text-2xl">🔥</span>
+                    )}
                   </div>
-                  <div>
-                    <p className="text-text-muted text-sm">Current Streak</p>
-                    <p className="text-2xl font-bold text-white">{userStats.currentStreak}</p>
+                  <p className="text-text-muted text-sm mb-1">Current Streak</p>
+                  <p className="text-3xl font-bold text-white text-glow">{userStats.currentStreak}</p>
+                </div>
+
+                {/* Longest Streak */}
+                <div className="group relative bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-2xl p-6 hover:border-purple-500/40 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="p-3 rounded-xl bg-purple-400/20 group-hover:scale-110 transition-transform duration-300">
+                      <Award className="w-6 h-6 text-purple-400" />
+                    </div>
+                    {userStats.longestStreak >= 5 && (
+                      <span className="text-2xl">⭐</span>
+                    )}
+                  </div>
+                  <p className="text-text-muted text-sm mb-1">Longest Streak</p>
+                  <p className="text-3xl font-bold text-white text-glow">{userStats.longestStreak}</p>
+                </div>
+
+                {/* Accuracy with Progress Ring */}
+                <div className="group relative bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-2xl p-6 hover:border-blue-500/40 transition-all duration-300">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-text-muted text-sm mb-1">Accuracy</p>
+                      <p className="text-3xl font-bold text-white text-glow mb-2">
+                        {userStats.accuracyPercentage.toFixed(1)}%
+                      </p>
+                      <div className="flex items-center gap-1 text-xs text-blue-400">
+                        <Target className="w-3 h-3" />
+                        <span>Precision Rate</span>
+                      </div>
+                    </div>
+                    <div className="scale-75">
+                      <ProgressRing 
+                        percentage={userStats.accuracyPercentage} 
+                        size={80}
+                        strokeWidth={6}
+                        color="#3b82f6"
+                      />
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-purple-400/20">
-                    <Award className="w-6 h-6 text-purple-400" />
+                {/* Total Points */}
+                <div className="group relative bg-gradient-to-br from-cosmic-purple/10 to-cosmic-blue/5 border border-cosmic-purple/20 rounded-2xl p-6 hover:border-cosmic-purple/40 transition-all duration-300">
+                  <div className="flex items-center justify-between mb-3">
+                    <div className="p-3 rounded-xl bg-cosmic-purple/20 group-hover:scale-110 transition-transform duration-300">
+                      <Trophy className="w-6 h-6 text-cosmic-purple" />
+                    </div>
+                    {userStats.totalPoints >= 100 && (
+                      <span className="text-2xl">🏆</span>
+                    )}
                   </div>
-                  <div>
-                    <p className="text-text-muted text-sm">Longest Streak</p>
-                    <p className="text-2xl font-bold text-white">{userStats.longestStreak}</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-blue-400/20">
-                    <Target className="w-6 h-6 text-blue-400" />
-                  </div>
-                  <div>
-                    <p className="text-text-muted text-sm">Accuracy</p>
-                    <p className="text-2xl font-bold text-white">{userStats.accuracyPercentage.toFixed(1)}%</p>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6">
-                <div className="flex items-center gap-4">
-                  <div className="p-3 rounded-xl bg-cosmic-purple/20">
-                    <Trophy className="w-6 h-6 text-cosmic-purple" />
-                  </div>
-                  <div>
-                    <p className="text-text-muted text-sm">Total Points</p>
-                    <p className="text-2xl font-bold text-white">{userStats.totalPoints}</p>
-                  </div>
+                  <p className="text-text-muted text-sm mb-1">Total Points</p>
+                  <p className="text-3xl font-bold text-white text-glow">{userStats.totalPoints}</p>
                 </div>
               </div>
             </div>
@@ -345,71 +384,34 @@ export default function DashboardPage() {
             <div className="lg:col-span-2">
               {selectedTab === "Active Bets" && (
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-6">
+                  <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-2">
+                    <Target className="w-7 h-7 text-cosmic-purple" />
                     Your Active Bets
                   </h2>
-                  <div className="space-y-6">
+                  <div className="space-y-4">
                     {activeBetsOnly.length > 0 ? (
                       activeBetsOnly.map((bet) => (
-                        <Link key={bet.id} href={`/markets/${bet.id}`}>
-                          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 transition-all cursor-pointer">
-                            <div className="flex justify-between items-start mb-4">
-                              <div className="flex-1">
-                                <h3 className="text-xl font-bold text-white mb-2">
-                                  {bet.question}
-                                </h3>
-                                <p className="text-text-muted text-sm">
-                                  Your prediction: <span className="text-cosmic-purple font-semibold">{bet.selectedOption}</span>
-                                </p>
-                              </div>
-                              <span className={`px-3 py-1 rounded-lg text-sm font-semibold ${
-                                bet.status === "active" ? "bg-green-500/20 text-green-400" :
-                                bet.status === "closed" ? "bg-yellow-500/20 text-yellow-400" :
-                                bet.status === "won" ? "bg-green-500/20 text-green-400" :
-                                "bg-red-500/20 text-red-400"
-                              }`}>
-                                {bet.status === "active" ? "Active" :
-                                 bet.status === "closed" ? "Closed" :
-                                 bet.status === "won" ? "Won" : "Lost"}
-                              </span>
-                            </div>
-
-                            <div className="flex items-center gap-6 text-sm text-text-muted">
-                              <span>Entry: {bet.entryFee} ETH</span>
-                              <span>•</span>
-                              <span>{bet.totalParticipants} participants</span>
-                              <span>•</span>
-                              <span>
-                                {bet.status === "active" 
-                                  ? `Closes ${bet.endTime.toLocaleDateString()}`
-                                  : `Closed ${bet.endTime.toLocaleDateString()}`
-                                }
-                              </span>
-                            </div>
-
-                            {bet.status === "won" && bet.prizeAmount && (
-                              <div className="mt-4 p-3 bg-green-500/20 border border-green-500/30 rounded-lg">
-                                <p className="text-green-400 font-semibold">
-                                  🎉 Prize: {bet.prizeAmount} ETH {bet.claimed ? "(Claimed)" : "(Pending)"}
-                                </p>
-                              </div>
-                            )}
-                          </div>
-                        </Link>
+                        <BetCard
+                          key={bet.id}
+                          id={bet.id}
+                          question={bet.question}
+                          selectedOption={bet.selectedOption}
+                          entryFee={bet.entryFee}
+                          endTime={bet.endTime}
+                          status={bet.status}
+                          prizeAmount={bet.prizeAmount}
+                          claimed={bet.claimed}
+                          totalParticipants={bet.totalParticipants}
+                        />
                       ))
                     ) : (
-                      <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-12 text-center">
-                        <div className="text-6xl mb-4">🎯</div>
-                        <p className="text-text-muted text-lg mb-6">
-                          No active bets yet. Start predicting!
-                        </p>
-                        <Link
-                          href="/markets"
-                          className="inline-block px-6 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-blue rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all"
-                        >
-                          Explore Markets
-                        </Link>
-                      </div>
+                      <EmptyState
+                        emoji="🎯"
+                        title="No Active Bets"
+                        description="You don't have any active predictions yet. Start predicting on markets to see them here!"
+                        actionText="Explore Markets"
+                        actionHref="/markets"
+                      />
                     )}
                   </div>
                 </div>
@@ -417,38 +419,34 @@ export default function DashboardPage() {
 
               {selectedTab === "Bet History" && (
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-6">
+                  <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-2">
+                    <Trophy className="w-7 h-7 text-cosmic-purple" />
                     Bet History
                   </h2>
                   <div className="space-y-4">
                     {activeBets.length > 0 ? (
                       activeBets.map((bet) => (
-                        <Link key={bet.id} href={`/markets/${bet.id}`}>
-                          <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-4 hover:bg-white/10 transition-all cursor-pointer">
-                            <div className="flex justify-between items-start">
-                              <div className="flex-1">
-                                <h4 className="text-white font-semibold mb-1">
-                                  {bet.question}
-                                </h4>
-                                <p className="text-text-muted text-sm">
-                                  {bet.selectedOption} • {bet.entryFee} ETH
-                                </p>
-                              </div>
-                              <span className={`px-2 py-1 rounded text-xs font-semibold ${
-                                bet.status === "won" ? "bg-green-500/20 text-green-400" :
-                                bet.status === "lost" ? "bg-red-500/20 text-red-400" :
-                                "bg-yellow-500/20 text-yellow-400"
-                              }`}>
-                                {bet.status}
-                              </span>
-                            </div>
-                          </div>
-                        </Link>
+                        <BetCard
+                          key={bet.id}
+                          id={bet.id}
+                          question={bet.question}
+                          selectedOption={bet.selectedOption}
+                          entryFee={bet.entryFee}
+                          endTime={bet.endTime}
+                          status={bet.status}
+                          prizeAmount={bet.prizeAmount}
+                          claimed={bet.claimed}
+                          totalParticipants={bet.totalParticipants}
+                        />
                       ))
                     ) : (
-                      <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-12 text-center">
-                        <p className="text-text-muted text-lg">No bet history yet</p>
-                      </div>
+                      <EmptyState
+                        emoji="📊"
+                        title="No Bet History"
+                        description="Your prediction history will appear here once you start participating in markets."
+                        actionText="Start Predicting"
+                        actionHref="/markets"
+                      />
                     )}
                   </div>
                 </div>
