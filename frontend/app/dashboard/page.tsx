@@ -10,7 +10,7 @@ import BetCard from "@/components/dashboard/BetCard";
 import AchievementCard from "@/components/dashboard/AchievementCard";
 import EmptyState from "@/components/dashboard/EmptyState";
 import ProgressRing from "@/components/dashboard/ProgressRing";
-import { Target, Trophy, DollarSign, Wallet, TrendingUp, Award, Sparkles } from "lucide-react";
+import { Target, Trophy, DollarSign, Wallet, TrendingUp, Award, Sparkles, Activity } from "lucide-react";
 import type { DashboardTab, RecentActivity } from "./types";
 import { PrizePredictionContract } from "../../app/ABIs/index";
 import PrizePoolPredictionABI from "../../app/ABIs/Prediction.json";
@@ -454,61 +454,81 @@ export default function DashboardPage() {
 
               {selectedTab === "Achievements" && (
                 <div>
-                  <h2 className="text-2xl font-bold text-white mb-6">
+                  <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-2">
+                    <Award className="w-7 h-7 text-cosmic-purple" />
                     Achievements
                   </h2>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {/* Streak Achievement */}
-                    {userStats && userStats.longestStreak >= 3 && (
-                      <div className="bg-white/5 backdrop-blur-sm border border-cosmic-purple/30 rounded-xl p-6">
-                        <div className="text-4xl mb-2">🔥</div>
-                        <h3 className="text-white font-bold mb-1">Streak Master</h3>
-                        <p className="text-text-muted text-sm">
-                          Achieved {userStats.longestStreak} prediction streak
-                        </p>
-                      </div>
-                    )}
+                    <AchievementCard
+                      emoji="🔥"
+                      title="Streak Master"
+                      description={`Achieved ${userStats?.longestStreak || 0} prediction streak`}
+                      borderColor="border-orange-500/30"
+                      glowColor="bg-orange-500"
+                      unlocked={userStats ? userStats.longestStreak >= 3 : false}
+                    />
 
                     {/* Accuracy Achievement */}
-                    {userStats && userStats.accuracyPercentage >= 70 && userStats.totalPredictions >= 5 && (
-                      <div className="bg-white/5 backdrop-blur-sm border border-green-400/30 rounded-xl p-6">
-                        <div className="text-4xl mb-2">🎯</div>
-                        <h3 className="text-white font-bold mb-1">Sharp Predictor</h3>
-                        <p className="text-text-muted text-sm">
-                          {userStats.accuracyPercentage.toFixed(1)}% accuracy rate
-                        </p>
-                      </div>
-                    )}
+                    <AchievementCard
+                      emoji="🎯"
+                      title="Sharp Predictor"
+                      description={`${userStats?.accuracyPercentage.toFixed(1) || 0}% accuracy rate`}
+                      borderColor="border-emerald-500/30"
+                      glowColor="bg-emerald-500"
+                      unlocked={userStats ? userStats.accuracyPercentage >= 70 && userStats.totalPredictions >= 5 : false}
+                    />
 
                     {/* Volume Achievement */}
-                    {userStats && userStats.totalPredictions >= 10 && (
-                      <div className="bg-white/5 backdrop-blur-sm border border-blue-400/30 rounded-xl p-6">
-                        <div className="text-4xl mb-2">📈</div>
-                        <h3 className="text-white font-bold mb-1">Active Trader</h3>
-                        <p className="text-text-muted text-sm">
-                          Made {userStats.totalPredictions}+ predictions
-                        </p>
-                      </div>
-                    )}
+                    <AchievementCard
+                      emoji="📈"
+                      title="Active Trader"
+                      description={`Made ${userStats?.totalPredictions || 0}+ predictions`}
+                      borderColor="border-blue-500/30"
+                      glowColor="bg-blue-500"
+                      unlocked={userStats ? userStats.totalPredictions >= 10 : false}
+                    />
 
                     {/* Points Achievement */}
-                    {userStats && userStats.totalPoints >= 100 && (
-                      <div className="bg-white/5 backdrop-blur-sm border border-yellow-400/30 rounded-xl p-6">
-                        <div className="text-4xl mb-2">⭐</div>
-                        <h3 className="text-white font-bold mb-1">Point Collector</h3>
-                        <p className="text-text-muted text-sm">
-                          Earned {userStats.totalPoints} points
-                        </p>
-                      </div>
-                    )}
+                    <AchievementCard
+                      emoji="⭐"
+                      title="Point Collector"
+                      description={`Earned ${userStats?.totalPoints || 0} points`}
+                      borderColor="border-yellow-500/30"
+                      glowColor="bg-yellow-500"
+                      unlocked={userStats ? userStats.totalPoints >= 100 : false}
+                    />
+
+                    {/* Winnings Achievement */}
+                    <AchievementCard
+                      emoji="💰"
+                      title="Big Winner"
+                      description={`Total winnings: ${parseFloat(userStats?.totalWinnings || "0").toFixed(4)} ETH`}
+                      borderColor="border-purple-500/30"
+                      glowColor="bg-purple-500"
+                      unlocked={userStats ? parseFloat(userStats.totalWinnings) >= 1 : false}
+                    />
+
+                    {/* First Prediction Achievement */}
+                    <AchievementCard
+                      emoji="🎊"
+                      title="First Steps"
+                      description="Made your first prediction"
+                      borderColor="border-cyan-500/30"
+                      glowColor="bg-cyan-500"
+                      unlocked={userStats ? userStats.totalPredictions >= 1 : false}
+                    />
                   </div>
 
                   {userStats && userStats.totalPredictions === 0 && (
-                    <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-12 text-center">
-                      <div className="text-6xl mb-4">🏆</div>
-                      <p className="text-text-muted text-lg">
-                        Start making predictions to unlock achievements!
-                      </p>
+                    <div className="mt-8">
+                      <EmptyState
+                        emoji="🏆"
+                        title="No Achievements Yet"
+                        description="Start making predictions to unlock achievements and earn rewards!"
+                        actionText="Start Predicting"
+                        actionHref="/markets"
+                      />
                     </div>
                   )}
                 </div>
@@ -517,29 +537,37 @@ export default function DashboardPage() {
 
             {/* Right column - Recent Activity */}
             <div className="lg:col-span-1">
-              <h2 className="text-2xl font-bold text-white mb-6">
-                Recent Activity
-              </h2>
-              <div className="space-y-4">
-                {activities.length > 0 ? (
-                  activities.map((activity) => (
-                    <ActivityItem key={activity.id} activity={activity} />
-                  ))
-                ) : (
-                  <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 text-center">
-                    <p className="text-text-muted">No recent activity</p>
-                  </div>
-                )}
-              </div>
+              <div className="sticky top-24">
+                <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
+                  <Activity className="w-6 h-6 text-cosmic-purple" />
+                  Recent Activity
+                </h2>
+                <div className="space-y-3 max-h-[600px] overflow-y-auto scrollbar-hide">
+                  {activities.length > 0 ? (
+                    activities.map((activity) => (
+                      <ActivityItem key={activity.id} activity={activity} />
+                    ))
+                  ) : (
+                    <EmptyState
+                      emoji="📭"
+                      title="No Activity"
+                      description="Your recent activity will appear here"
+                    />
+                  )}
+                </div>
 
-              {/* Refresh Button */}
-              <button
-                onClick={connectAndFetchData}
-                disabled={loading}
-                className="w-full mt-6 py-3 bg-cosmic-purple/20 hover:bg-cosmic-purple/30 border border-cosmic-purple/50 rounded-lg text-cosmic-purple font-semibold transition-all disabled:opacity-50"
-              >
-                {loading ? "Refreshing..." : "🔄 Refresh Dashboard"}
-              </button>
+                {/* Refresh Button */}
+                <button
+                  onClick={connectAndFetchData}
+                  disabled={loading}
+                  className="w-full mt-6 py-3 bg-gradient-to-r from-cosmic-purple/20 to-cosmic-blue/20 hover:from-cosmic-purple/30 hover:to-cosmic-blue/30 border border-cosmic-purple/50 rounded-xl text-white font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 group"
+                >
+                  <span className="group-hover:rotate-180 transition-transform duration-500">
+                    🔄
+                  </span>
+                  <span>{loading ? "Refreshing..." : "Refresh Dashboard"}</span>
+                </button>
+              </div>
             </div>
           </div>
         </div>
