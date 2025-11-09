@@ -4,6 +4,12 @@ import Stats from "@/components/Stats";
 import HowItWorks from "@/components/HowItWorks";
 import ActiveMarkets from "@/components/ActiveMarkets";
 import WhyChooseUs from "@/components/WhyChooseUs";
+import PlatformFeatures from "@/components/PlatformFeatures";
+import CommunityStats from "@/components/CommunityStats";
+import Testimonials from "@/components/Testimonials";
+import FAQ from "@/components/FAQ";
+import CTASection from "@/components/CTASection";
+import TrustIndicators from "@/components/TrustIndicators";
 import Footer from "@/components/Footer";
 
 export default function Home() {
@@ -15,6 +21,12 @@ export default function Home() {
       <HowItWorks />
       <ActiveMarkets />
       <WhyChooseUs />
+      <PlatformFeatures />
+      <CommunityStats />
+      <Testimonials />
+      <FAQ />
+      <CTASection />
+      <TrustIndicators />
       <Footer />
     </div>
   );
