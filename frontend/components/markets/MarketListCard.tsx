@@ -12,8 +12,7 @@ interface MarketListCardProps {
 
 export default function MarketListCard({ market }: MarketListCardProps) {
   return (
-    <Link href={`/markets/${market.id}`}>
-      <div className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-cosmic-purple/50 transition-all duration-300 cursor-pointer">
+    <div className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-cosmic-purple/50 transition-all duration-300">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left side - Image */}
           <div className="relative w-full md:w-48 h-48 flex-shrink-0 rounded-xl overflow-hidden">
@@ -62,18 +61,14 @@ export default function MarketListCard({ market }: MarketListCardProps) {
 
           {/* Right side - Trade button */}
           <div className="flex items-center justify-center md:justify-end">
-            <button
-              onClick={(e) => {
-                e.preventDefault();
-                // Handle trade action
-              }}
-              className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-blue rounded-full font-semibold text-white hover:shadow-lg hover:shadow-cosmic-blue/50 transition-all hover:scale-105"
+            <Link
+              href={`/markets/${market.id}`}
+              className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-blue rounded-full font-semibold text-white hover:shadow-lg hover:shadow-cosmic-blue/50 transition-all hover:scale-105 text-center"
             >
               Trade
-            </button>
+            </Link>
           </div>
         </div>
       </div>
-    </Link>
   );
 }
