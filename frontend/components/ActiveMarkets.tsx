@@ -63,10 +63,13 @@ export default function ActiveMarkets() {
           
           {/* See more button */}
           <div className="flex justify-center mt-8">
-            <button className="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 group">
+            <a
+              href="/markets"
+              className="flex items-center gap-2 px-6 py-3 rounded-full border border-white/20 bg-white/5 backdrop-blur-sm text-white hover:bg-white/10 hover:border-white/30 transition-all duration-300 group"
+            >
               <span className="text-sm font-medium">See more</span>
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" />
-            </button>
+            </a>
           </div>
         </div>
 
