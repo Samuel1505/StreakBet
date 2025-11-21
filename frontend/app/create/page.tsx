@@ -327,11 +327,31 @@ export default function CreateMarket() {
           <form onSubmit={handleSubmit} className="space-y-8">
             {error && (
               <div className={`${
-                error.includes("submitted") || error.includes("confirmed") 
+                error.includes("submitted") || error.includes("confirmed") || error.includes("✅")
                   ? "bg-blue-500/20 border-blue-500 text-blue-300" 
+                  : error.includes("Transaction cancelled")
+                  ? "bg-yellow-500/20 border-yellow-500 text-yellow-300"
                   : "bg-red-500/20 border-red-500 text-red-300"
-              } border p-4 rounded-lg`}>
-                {error}
+              } border p-4 rounded-lg flex items-start gap-3`}>
+                <div className="flex-shrink-0 mt-0.5">
+                  {error.includes("✅") ? (
+                    <span className="text-2xl">✅</span>
+                  ) : error.includes("submitted") || error.includes("confirmed") ? (
+                    <span className="text-2xl">⏳</span>
+                  ) : error.includes("Transaction cancelled") ? (
+                    <span className="text-2xl">⚠️</span>
+                  ) : (
+                    <span className="text-2xl">❌</span>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium">{error}</p>
+                  {error.includes("submitted") && (
+                    <p className="text-sm mt-2 opacity-90">
+                      Please wait for blockchain confirmation. This may take a few moments...
+                    </p>
+                  )}
+                </div>
               </div>
             )}
             
