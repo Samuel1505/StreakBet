@@ -433,14 +433,34 @@ export default function MarketDetailPage() {
                 )}
 
                 {error && (
-                  <div className={`mb-6 p-4 border rounded-lg ${
-                    error.includes("✅") || error.includes("submitted")
+                  <div className={`mb-6 p-4 border rounded-lg flex items-start gap-3 ${
+                    error.includes("✅") || error.includes("successfully")
                       ? "bg-green-500/20 border-green-500/30 text-green-400"
-                      : error.includes("Waiting")
+                      : error.includes("submitted") || error.includes("Waiting")
                       ? "bg-blue-500/20 border-blue-500/30 text-blue-400"
+                      : error.includes("cancelled")
+                      ? "bg-yellow-500/20 border-yellow-500/30 text-yellow-400"
                       : "bg-red-500/20 border-red-500/30 text-red-400"
                   }`}>
-                    <p className="text-sm">{error}</p>
+                    <div className="flex-shrink-0 mt-0.5">
+                      {error.includes("✅") || error.includes("successfully") ? (
+                        <span className="text-xl">✅</span>
+                      ) : error.includes("submitted") || error.includes("Waiting") ? (
+                        <span className="text-xl">⏳</span>
+                      ) : error.includes("cancelled") ? (
+                        <span className="text-xl">⚠️</span>
+                      ) : (
+                        <span className="text-xl">❌</span>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">{error}</p>
+                      {error.includes("submitted") && (
+                        <p className="text-xs mt-2 opacity-90">
+                          Waiting for blockchain confirmation...
+                        </p>
+                      )}
+                    </div>
                   </div>
                 )}
 
