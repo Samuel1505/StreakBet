@@ -195,11 +195,46 @@ export default function MarketDetailPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cosmic-dark flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-cosmic-purple mb-4"></div>
-          <p className="text-text-muted">Loading market details...</p>
-        </div>
+      <div className="min-h-screen bg-cosmic-dark relative overflow-hidden">
+        <div className="absolute inset-0 cosmic-gradient" />
+        <Header />
+        <main className="relative z-10 pt-32 pb-20 px-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="h-8 bg-white/10 rounded-lg w-48 mb-6 animate-pulse" />
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-6">
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 animate-pulse">
+                  <div className="flex gap-6 mb-6">
+                    <div className="w-32 h-32 bg-white/10 rounded-xl" />
+                    <div className="flex-1 space-y-4">
+                      <div className="h-8 bg-white/10 rounded w-3/4" />
+                      <div className="h-4 bg-white/10 rounded w-1/2" />
+                    </div>
+                  </div>
+                  <div className="h-20 bg-white/10 rounded" />
+                </div>
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 animate-pulse">
+                  <div className="h-6 bg-white/10 rounded w-1/4 mb-4" />
+                  <div className="space-y-3">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="h-4 bg-white/10 rounded" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+              <div className="lg:col-span-1">
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 animate-pulse">
+                  <div className="h-6 bg-white/10 rounded w-1/2 mb-6" />
+                  <div className="space-y-4">
+                    <div className="h-12 bg-white/10 rounded" />
+                    <div className="h-12 bg-white/10 rounded" />
+                    <div className="h-32 bg-white/10 rounded" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
@@ -433,14 +468,34 @@ export default function MarketDetailPage() {
                 )}
 
                 {error && (
-                  <div className={`mb-6 p-4 border rounded-lg ${
-                    error.includes("✅") || error.includes("submitted")
+                  <div className={`mb-6 p-4 border rounded-lg flex items-start gap-3 ${
+                    error.includes("✅") || error.includes("successfully")
                       ? "bg-green-500/20 border-green-500/30 text-green-400"
-                      : error.includes("Waiting")
+                      : error.includes("submitted") || error.includes("Waiting")
                       ? "bg-blue-500/20 border-blue-500/30 text-blue-400"
+                      : error.includes("cancelled")
+                      ? "bg-yellow-500/20 border-yellow-500/30 text-yellow-400"
                       : "bg-red-500/20 border-red-500/30 text-red-400"
                   }`}>
-                    <p className="text-sm">{error}</p>
+                    <div className="flex-shrink-0 mt-0.5">
+                      {error.includes("✅") || error.includes("successfully") ? (
+                        <span className="text-xl">✅</span>
+                      ) : error.includes("submitted") || error.includes("Waiting") ? (
+                        <span className="text-xl">⏳</span>
+                      ) : error.includes("cancelled") ? (
+                        <span className="text-xl">⚠️</span>
+                      ) : (
+                        <span className="text-xl">❌</span>
+                      )}
+                    </div>
+                    <div className="flex-1">
+                      <p className="text-sm font-medium">{error}</p>
+                      {error.includes("submitted") && (
+                        <p className="text-xs mt-2 opacity-90">
+                          Waiting for blockchain confirmation...
+                        </p>
+                      )}
+                    </div>
                   </div>
                 )}
 

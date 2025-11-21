@@ -54,9 +54,25 @@ export default function Hero() {
           of Crypto
         </h1>
         
-        <p className="text-lg md:text-xl text-text-muted max-w-2xl mx-auto">
-          Join now, the leading platform form crypto prediction market. Use your knowledge to for forecast the digital assets and earn reward
+        <p className="text-lg md:text-xl text-text-muted max-w-2xl mx-auto mb-8">
+          Join now, the leading platform for crypto prediction markets. Use your knowledge to forecast digital assets and earn rewards.
         </p>
+        
+        {/* CTA Buttons */}
+        <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mt-8">
+          <a
+            href="/markets"
+            className="px-8 py-4 bg-gradient-to-r from-cosmic-purple to-cosmic-blue rounded-full font-semibold text-white hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all hover:scale-105"
+          >
+            Explore Markets
+          </a>
+          <a
+            href="/create"
+            className="px-8 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full font-semibold text-white hover:bg-white/20 transition-all hover:scale-105"
+          >
+            Create Market
+          </a>
+        </div>
       </div>
       
       {/* Bottom gradient fade */}

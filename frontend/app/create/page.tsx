@@ -23,6 +23,8 @@ export default function CreateMarket() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [fieldValid, setFieldValid] = useState<Record<string, boolean>>({});
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -278,8 +280,94 @@ export default function CreateMarket() {
     }
   };
 
+  const validateField = (field: string, value: string): { isValid: boolean; error?: string } => {
+    switch (field) {
+      case "marketQuestion":
+        if (!value.trim()) {
+          return { isValid: false, error: "Question is required" };
+        }
+        if (value.trim().length < 10) {
+          return { isValid: false, error: "Question must be at least 10 characters" };
+        }
+        return { isValid: true };
+      
+      case "entryFee":
+        if (!value) {
+          return { isValid: false, error: "Entry fee is required" };
+        }
+        const entryFeeNum = parseFloat(value);
+        if (isNaN(entryFeeNum) || entryFeeNum <= 0) {
+          return { isValid: false, error: "Entry fee must be greater than 0" };
+        }
+        if (entryFeeNum < 0.0001) {
+          return { isValid: false, error: "Entry fee is too small (min 0.0001 ETH)" };
+        }
+        return { isValid: true };
+      
+      case "initialPrizePool":
+        if (!value) {
+          return { isValid: false, error: "Prize pool is required" };
+        }
+        const prizePoolNum = parseFloat(value);
+        if (isNaN(prizePoolNum) || prizePoolNum <= 0) {
+          return { isValid: false, error: "Prize pool must be greater than 0" };
+        }
+        if (prizePoolNum < 0.001) {
+          return { isValid: false, error: "Prize pool is too small (min 0.001 ETH)" };
+        }
+        return { isValid: true };
+      
+      case "options":
+        if (!value.trim()) {
+          return { isValid: false, error: "Options are required" };
+        }
+        const optionsArray = value.split(",").map(opt => opt.trim()).filter(Boolean);
+        if (optionsArray.length < 2) {
+          return { isValid: false, error: "At least 2 options are required" };
+        }
+        return { isValid: true };
+      
+      case "endTime":
+        if (!value) {
+          return { isValid: false, error: "End time is required" };
+        }
+        const endTimeDate = new Date(value);
+        const now = new Date();
+        if (isNaN(endTimeDate.getTime())) {
+          return { isValid: false, error: "Invalid date" };
+        }
+        if (endTimeDate <= now) {
+          return { isValid: false, error: "End time must be in the future" };
+        }
+        const hoursUntilEnd = (endTimeDate.getTime() - now.getTime()) / (1000 * 60 * 60);
+        if (hoursUntilEnd < 1) {
+          return { isValid: false, error: "End time must be at least 1 hour from now" };
+        }
+        return { isValid: true };
+      
+      default:
+        return { isValid: true };
+    }
+  };
+
   const handleInputChange = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
+    
+    // Clear error for this field
+    if (fieldErrors[field]) {
+      setFieldErrors((prev) => {
+        const newErrors = { ...prev };
+        delete newErrors[field];
+        return newErrors;
+      });
+    }
+    
+    // Validate field
+    const validation = validateField(field, value);
+    setFieldValid((prev) => ({ ...prev, [field]: validation.isValid }));
+    if (!validation.isValid && validation.error) {
+      setFieldErrors((prev) => ({ ...prev, [field]: validation.error! }));
+    }
   };
 
   const handleThumbnailChange = (file: File | null) => {
@@ -327,11 +415,31 @@ export default function CreateMarket() {
           <form onSubmit={handleSubmit} className="space-y-8">
             {error && (
               <div className={`${
-                error.includes("submitted") || error.includes("confirmed") 
+                error.includes("submitted") || error.includes("confirmed") || error.includes("✅")
                   ? "bg-blue-500/20 border-blue-500 text-blue-300" 
+                  : error.includes("Transaction cancelled")
+                  ? "bg-yellow-500/20 border-yellow-500 text-yellow-300"
                   : "bg-red-500/20 border-red-500 text-red-300"
-              } border p-4 rounded-lg`}>
-                {error}
+              } border p-4 rounded-lg flex items-start gap-3`}>
+                <div className="flex-shrink-0 mt-0.5">
+                  {error.includes("✅") ? (
+                    <span className="text-2xl">✅</span>
+                  ) : error.includes("submitted") || error.includes("confirmed") ? (
+                    <span className="text-2xl">⏳</span>
+                  ) : error.includes("Transaction cancelled") ? (
+                    <span className="text-2xl">⚠️</span>
+                  ) : (
+                    <span className="text-2xl">❌</span>
+                  )}
+                </div>
+                <div className="flex-1">
+                  <p className="font-medium">{error}</p>
+                  {error.includes("submitted") && (
+                    <p className="text-sm mt-2 opacity-90">
+                      Please wait for blockchain confirmation. This may take a few moments...
+                    </p>
+                  )}
+                </div>
               </div>
             )}
             
@@ -343,6 +451,10 @@ export default function CreateMarket() {
                   placeholder="e.g Will SOL hit $2,000 by 01-Jan-2025?"
                   value={formData.marketQuestion}
                   onChange={(value) => handleInputChange("marketQuestion", value)}
+                  error={fieldErrors.marketQuestion}
+                  isValid={fieldValid.marketQuestion}
+                  helperText="Make your question clear and specific"
+                  required
                 />
 
                 <FormField
@@ -351,6 +463,10 @@ export default function CreateMarket() {
                   value={formData.entryFee}
                   onChange={(value) => handleInputChange("entryFee", value)}
                   type="text"
+                  error={fieldErrors.entryFee}
+                  isValid={fieldValid.entryFee}
+                  helperText="Amount each participant must pay to join"
+                  required
                 />
 
                 <FormField
@@ -359,6 +475,10 @@ export default function CreateMarket() {
                   value={formData.initialPrizePool}
                   onChange={(value) => handleInputChange("initialPrizePool", value)}
                   type="text"
+                  error={fieldErrors.initialPrizePool}
+                  isValid={fieldValid.initialPrizePool}
+                  helperText="Starting prize pool amount (you'll fund this)"
+                  required
                 />
 
                 <FormField
@@ -366,6 +486,10 @@ export default function CreateMarket() {
                   placeholder="e.g Yes,No"
                   value={formData.options}
                   onChange={(value) => handleInputChange("options", value)}
+                  error={fieldErrors.options}
+                  isValid={fieldValid.options}
+                  helperText="Separate options with commas (minimum 2 required)"
+                  required
                 />
 
                 <div className="grid grid-cols-2 gap-4">

@@ -11,6 +11,7 @@ import FAQ from "@/components/FAQ";
 import CTASection from "@/components/CTASection";
 import TrustIndicators from "@/components/TrustIndicators";
 import Footer from "@/components/Footer";
+import ScrollToTop from "@/components/ScrollToTop";
 
 export default function Home() {
   return (
@@ -28,6 +29,7 @@ export default function Home() {
       <CTASection />
       <TrustIndicators />
       <Footer />
+      <ScrollToTop />
     </div>
   );
 }

@@ -205,11 +205,50 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-cosmic-dark flex items-center justify-center">
-        <div className="text-center">
-          <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-cosmic-purple mb-4"></div>
-          <p className="text-text-muted">Loading your dashboard...</p>
-        </div>
+      <div className="min-h-screen bg-cosmic-dark relative overflow-hidden">
+        <div className="absolute inset-0 cosmic-gradient" />
+        <Header />
+        <main className="relative z-10 pt-32 pb-20 px-6">
+          <div className="max-w-7xl mx-auto">
+            <div className="mb-12">
+              <div className="h-12 bg-white/10 rounded-lg w-64 mb-4 animate-pulse" />
+              <div className="h-6 bg-white/10 rounded-lg w-96 animate-pulse" />
+            </div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 animate-pulse">
+                  <div className="flex items-center justify-between mb-4">
+                    <div className="w-12 h-12 bg-white/10 rounded-xl" />
+                    <div className="w-16 h-4 bg-white/10 rounded" />
+                  </div>
+                  <div className="h-8 bg-white/10 rounded w-1/2 mb-2" />
+                  <div className="h-4 bg-white/10 rounded w-3/4" />
+                </div>
+              ))}
+            </div>
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="lg:col-span-2 space-y-4">
+                {[1, 2, 3].map((i) => (
+                  <div key={i} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 animate-pulse">
+                    <div className="h-6 bg-white/10 rounded w-1/3 mb-4" />
+                    <div className="h-4 bg-white/10 rounded w-full mb-2" />
+                    <div className="h-4 bg-white/10 rounded w-5/6" />
+                  </div>
+                ))}
+              </div>
+              <div className="lg:col-span-1">
+                <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 animate-pulse">
+                  <div className="h-6 bg-white/10 rounded w-1/2 mb-4" />
+                  <div className="space-y-3">
+                    {[1, 2, 3, 4].map((i) => (
+                      <div key={i} className="h-16 bg-white/10 rounded" />
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
       </div>
     );
   }
@@ -303,6 +342,7 @@ export default function DashboardPage() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Current Streak */}
+                {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class */}
                 <div className="group relative bg-gradient-to-br from-orange-500/10 to-orange-600/5 border border-orange-500/20 rounded-2xl p-6 hover:border-orange-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-3 rounded-xl bg-orange-400/20 group-hover:scale-110 transition-transform duration-300">
@@ -317,6 +357,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Longest Streak */}
+                {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class */}
                 <div className="group relative bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-2xl p-6 hover:border-purple-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-3 rounded-xl bg-purple-400/20 group-hover:scale-110 transition-transform duration-300">
@@ -331,6 +372,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Accuracy with Progress Ring */}
+                {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class */}
                 <div className="group relative bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-2xl p-6 hover:border-blue-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between">
                     <div>
@@ -355,6 +397,7 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Total Points */}
+                {/* eslint-disable-next-line */}
                 <div className="group relative bg-gradient-to-br from-cosmic-purple/10 to-cosmic-blue/5 border border-cosmic-purple/20 rounded-2xl p-6 hover:border-cosmic-purple/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-3 rounded-xl bg-cosmic-purple/20 group-hover:scale-110 transition-transform duration-300">

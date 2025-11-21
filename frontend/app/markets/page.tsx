@@ -246,9 +246,25 @@ export default function MarketsPage() {
 
           {/* Loading State */}
           {loading && (
-            <div className="mt-8 text-center py-12">
-              <div className="inline-block animate-spin rounded-full h-12 w-12 border-b-2 border-cosmic-purple"></div>
-              <p className="text-text-muted mt-4">Loading markets from blockchain...</p>
+            <div className="mt-8 space-y-6">
+              {[1, 2, 3].map((i) => (
+                <div key={i} className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 animate-pulse">
+                  <div className="flex flex-col md:flex-row gap-6">
+                    <div className="w-full md:w-48 h-48 bg-white/10 rounded-xl" />
+                    <div className="flex-1 space-y-4">
+                      <div className="h-6 bg-white/10 rounded w-3/4" />
+                      <div className="h-4 bg-white/10 rounded w-1/2" />
+                      <div className="flex gap-4">
+                        <div className="h-10 bg-white/10 rounded-lg w-24" />
+                        <div className="h-10 bg-white/10 rounded-lg w-24" />
+                      </div>
+                    </div>
+                    <div className="w-full md:w-auto">
+                      <div className="h-12 bg-white/10 rounded-full w-32" />
+                    </div>
+                  </div>
+                </div>
+              ))}
             </div>
           )}
 
