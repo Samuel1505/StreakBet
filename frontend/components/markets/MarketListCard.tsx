@@ -69,7 +69,7 @@ export default function MarketListCard({ market }: MarketListCardProps) {
                 e.preventDefault();
                 window.location.href = `/markets/${market.id}`;
               }}
-              className="w-full md:w-auto px-8 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-blue rounded-full font-semibold text-white hover:shadow-lg hover:shadow-cosmic-blue/50 transition-all hover:scale-105"
+              className="w-full md:w-auto px-8 py-3 bg-linear-to-r from-cosmic-purple to-cosmic-blue rounded-full font-semibold text-white hover:shadow-lg hover:shadow-cosmic-blue/50 transition-all hover:scale-105"
             >
               Trade
             </button>
