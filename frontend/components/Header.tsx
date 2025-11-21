@@ -58,7 +58,7 @@ export default function Header() {
         <div className="flex items-center gap-4">
           {/* Wallet Button */}
           <div className="bg-cosmic-blue hover:bg-blue-600 text-white px-6 py-2.5 rounded-full font-medium transition-all hover:shadow-lg hover:shadow-cosmic-blue/50">
-            {/* @ts-expect-error - appkit-button is a custom web component */}
+            {/* @ts-ignore - appkit-button is a custom web component */}
             <appkit-button />
           </div>
 

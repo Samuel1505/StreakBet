@@ -334,7 +334,6 @@ export default function DashboardPage() {
 
           {/* Performance Overview */}
           {userStats && (
-            {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class, linter suggestion is incorrect */}
             <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 mb-12">
               <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
                 <TrendingUp className="w-6 h-6 text-cosmic-purple" />
@@ -601,7 +600,6 @@ export default function DashboardPage() {
                 </div>
 
                 {/* Refresh Button */}
-                {/* eslint-disable-next-line */}
                 <button
                   onClick={connectAndFetchData}
                   disabled={loading}
