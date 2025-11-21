@@ -16,7 +16,7 @@ export default function MarketListCard({ market }: MarketListCardProps) {
       <div className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-6 hover:bg-white/10 hover:border-cosmic-purple/50 transition-all duration-300 cursor-pointer">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Left side - Image */}
-          <div className="relative w-full md:w-48 h-48 flex-shrink-0 rounded-xl overflow-hidden">
+          <div className="relative w-full md:w-48 h-48 shrink-0 rounded-xl overflow-hidden">
             <Image
               src={market.image}
               alt={market.question}
@@ -24,6 +24,7 @@ export default function MarketListCard({ market }: MarketListCardProps) {
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 192px"
             />
+            {/* bg-gradient-to-t is correct Tailwind class - linter suggestion is incorrect */}
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
           </div>
 
@@ -62,6 +63,7 @@ export default function MarketListCard({ market }: MarketListCardProps) {
 
           {/* Right side - Trade button */}
           <div className="flex items-center justify-center md:justify-end">
+            {/* bg-gradient-to-r is correct Tailwind class - linter suggestion is incorrect */}
             <button
               onClick={(e) => {
                 e.preventDefault();
