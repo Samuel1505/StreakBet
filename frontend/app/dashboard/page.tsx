@@ -334,7 +334,7 @@ export default function DashboardPage() {
 
           {/* Performance Overview */}
           {userStats && (
-            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 mb-12">
+            <div className="bg-linear-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 mb-12">
               <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
                 <TrendingUp className="w-6 h-6 text-cosmic-purple" />
                 Performance Overview
