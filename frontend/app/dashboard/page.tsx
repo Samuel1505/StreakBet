@@ -343,7 +343,7 @@ export default function DashboardPage() {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Current Streak */}
                 {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class */}
-                <div className="group relative bg-gradient-to-br from-orange-500/10 to-orange-600/5 border border-orange-500/20 rounded-2xl p-6 hover:border-orange-500/40 transition-all duration-300">
+                <div className="group relative bg-linear-to-br from-orange-500/10 to-orange-600/5 border border-orange-500/20 rounded-2xl p-6 hover:border-orange-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-3 rounded-xl bg-orange-400/20 group-hover:scale-110 transition-transform duration-300">
                       <TrendingUp className="w-6 h-6 text-orange-400" />
