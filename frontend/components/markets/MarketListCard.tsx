@@ -1,10 +1,11 @@
 "use client";
 
-import { ThumbsUp, ThumbsDown } from "lucide-react";
+import { ThumbsUp, ThumbsDown, Users, TrendingUp } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Market } from "@/app/markets/types";
-import { formatTimeRemaining, formatPercentage } from "@/app/markets/utils";
+import { formatTimeRemaining, formatPercentage, formatVolume } from "@/app/markets/utils";
+import CategoryBadge from "./CategoryBadge";
 
 interface MarketListCardProps {
   market: Market;
@@ -31,12 +32,29 @@ export default function MarketListCard({ market }: MarketListCardProps) {
           {/* Middle - Content */}
           <div className="flex-1 flex flex-col justify-between">
             <div>
+              {/* Category Badge */}
+              <div className="mb-2">
+                <CategoryBadge category={market.category} />
+              </div>
+              
               <h3 className="text-white text-lg md:text-xl font-semibold mb-3 line-clamp-2 group-hover:text-cosmic-blue transition-colors">
                 {market.question}
               </h3>
-              <p className="text-text-muted text-sm mb-4">
-                {formatTimeRemaining(market.closingDate)}
-              </p>
+              
+              {/* Metadata Row */}
+              <div className="flex flex-wrap items-center gap-4 mb-4">
+                <div className="flex items-center gap-1.5 text-text-muted text-sm">
+                  <Users className="w-4 h-4" />
+                  <span>{market.participants} participants</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-text-muted text-sm">
+                  <TrendingUp className="w-4 h-4" />
+                  <span>{formatVolume(market.volume)} volume</span>
+                </div>
+                <div className="text-text-muted text-sm">
+                  {formatTimeRemaining(market.closingDate)}
+                </div>
+              </div>
             </div>
 
             {/* Voting indicators */}

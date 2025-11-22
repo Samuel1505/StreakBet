@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { ethers } from "ethers";
 import { useSearchParams } from "next/navigation";
+import { Search } from "lucide-react";
 import Header from "@/components/Header";
 import FilterPills from "@/components/markets/FilterPills";
 import MarketListCard from "@/components/markets/MarketListCard";
@@ -49,6 +50,7 @@ export default function MarketsPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [highlightId, setHighlightId] = useState<string | null>(newId);
+  const [searchQuery, setSearchQuery] = useState("");
 
   useEffect(() => {
     fetchMarkets();
@@ -184,9 +186,23 @@ export default function MarketsPage() {
     setSelectedFilter(filter);
   };
 
-  // Filter and sort markets based on selected filter
+  // Filter and sort markets based on selected filter and search query
   const filteredMarkets = [...markets]
-    .filter((market) => market.status === "active") // Only show active markets
+    .filter((market) => {
+      // Filter by status
+      if (market.status !== "active") return false;
+      
+      // Filter by search query
+      if (searchQuery.trim()) {
+        const query = searchQuery.toLowerCase();
+        return (
+          market.question.toLowerCase().includes(query) ||
+          market.category.toLowerCase().includes(query)
+        );
+      }
+      
+      return true;
+    })
     .sort((a, b) => {
       switch (selectedFilter) {
         case "Closing Soon":
@@ -224,6 +240,28 @@ export default function MarketsPage() {
             </p>
           </div>
 
+          {/* Search Bar */}
+          <div className="mb-6">
+            <div className="relative max-w-2xl">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted" />
+              <input
+                type="text"
+                placeholder="Search markets by question or category..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full pl-12 pr-4 py-3.5 bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl text-white placeholder:text-text-muted focus:outline-none focus:border-cosmic-blue/50 focus:bg-white/10 transition-all"
+              />
+              {searchQuery && (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="absolute right-4 top-1/2 -translate-y-1/2 text-text-muted hover:text-white transition-colors"
+                >
+                  ✕
+                </button>
+              )}
+            </div>
+          </div>
+
           {/* Success Message for New Market */}
           {newId && highlightId && (
             <div className="mb-6 bg-green-500/20 border border-green-500 text-green-300 p-4 rounded-lg animate-pulse">
@@ -231,11 +269,18 @@ export default function MarketsPage() {
             </div>
           )}
 
-          {/* Filter Pills */}
-          <FilterPills
-            selectedFilter={selectedFilter}
-            onFilterChange={handleFilterChange}
-          />
+          {/* Filter Pills with Results Count */}
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <FilterPills
+              selectedFilter={selectedFilter}
+              onFilterChange={handleFilterChange}
+            />
+            {!loading && !error && (
+              <div className="text-text-muted text-sm">
+                {filteredMarkets.length} {filteredMarkets.length === 1 ? "market" : "markets"} found
+              </div>
+            )}
+          </div>
 
           {/* Error Message */}
           {error && (
@@ -271,21 +316,38 @@ export default function MarketsPage() {
           {/* Empty State */}
           {!loading && !error && filteredMarkets.length === 0 && (
             <div className="mt-8 text-center py-12">
-              <div className="text-6xl mb-4">🔮</div>
+              <div className="text-6xl mb-4">
+                {searchQuery ? "🔍" : "🔮"}
+              </div>
               <h3 className="text-2xl font-bold text-white mb-2">
-                {markets.length === 0 ? "No markets yet" : "No active markets"}
+                {searchQuery 
+                  ? "No markets found" 
+                  : markets.length === 0 
+                    ? "No markets yet" 
+                    : "No active markets"}
               </h3>
               <p className="text-text-muted mb-6">
-                {markets.length === 0 
-                  ? "Be the first to create a prediction market!" 
-                  : "All markets are currently resolved or inactive"}
+                {searchQuery 
+                  ? `No markets match "${searchQuery}". Try a different search term.`
+                  : markets.length === 0 
+                    ? "Be the first to create a prediction market!" 
+                    : "All markets are currently resolved or inactive"}
               </p>
-              <a
-                href="/create"
-                className="inline-block px-6 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-blue rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all"
-              >
-                Create Market
-              </a>
+              {searchQuery ? (
+                <button
+                  onClick={() => setSearchQuery("")}
+                  className="inline-block px-6 py-3 bg-cosmic-purple/20 hover:bg-cosmic-purple/30 border border-cosmic-purple/50 rounded-lg font-semibold text-cosmic-purple transition-all"
+                >
+                  Clear Search
+                </button>
+              ) : (
+                <a
+                  href="/create"
+                  className="inline-block px-6 py-3 bg-gradient-to-r from-cosmic-purple to-cosmic-blue rounded-lg font-semibold text-white hover:shadow-lg hover:shadow-cosmic-purple/50 transition-all"
+                >
+                  Create Market
+                </a>
+              )}
             </div>
           )}
 

@@ -13,6 +13,8 @@ interface BetCardProps {
   prizeAmount?: string;
   claimed?: boolean;
   totalParticipants: number;
+  currentOdds?: number;
+  potentialPayout?: string;
 }
 
 export default function BetCard({
@@ -25,6 +27,8 @@ export default function BetCard({
   prizeAmount,
   claimed,
   totalParticipants,
+  currentOdds,
+  potentialPayout,
 }: BetCardProps) {
   const getStatusConfig = () => {
     switch (status) {
@@ -95,7 +99,7 @@ export default function BetCard({
           </div>
 
           {/* Stats row */}
-          <div className="flex flex-wrap items-center gap-4 text-sm text-text-muted mb-4">
+          <div className="grid grid-cols-2 sm:flex sm:flex-wrap items-center gap-3 sm:gap-4 text-sm text-text-muted mb-4">
             <div className="flex items-center gap-1.5">
               <div className="w-2 h-2 rounded-full bg-cosmic-blue" />
               <span className="font-medium">{entryFee} ETH</span>
@@ -104,9 +108,9 @@ export default function BetCard({
               <Users className="w-4 h-4" />
               <span>{totalParticipants} participants</span>
             </div>
-            <div className="flex items-center gap-1.5">
+            <div className="flex items-center gap-1.5 col-span-2 sm:col-span-1">
               <Clock className="w-4 h-4" />
-              <span>
+              <span className="text-xs sm:text-sm">
                 {status === "active" 
                   ? `Closes ${endTime.toLocaleDateString()}`
                   : `Closed ${endTime.toLocaleDateString()}`
@@ -114,6 +118,22 @@ export default function BetCard({
               </span>
             </div>
           </div>
+
+          {/* Live Odds & Potential Payout (for active bets) */}
+          {status === "active" && currentOdds !== undefined && potentialPayout && (
+            <div className="mb-4 p-3 bg-cosmic-blue/10 border border-cosmic-blue/30 rounded-lg">
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <p className="text-text-muted text-xs mb-1">Current Odds</p>
+                  <p className="text-cosmic-blue font-bold text-lg">{currentOdds}%</p>
+                </div>
+                <div>
+                  <p className="text-text-muted text-xs mb-1">Potential Payout</p>
+                  <p className="text-white font-bold text-lg">{potentialPayout} ETH</p>
+                </div>
+              </div>
+            </div>
+          )}
 
           {/* Prize info for won bets */}
           {status === "won" && prizeAmount && (

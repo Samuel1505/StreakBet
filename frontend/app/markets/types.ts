@@ -15,6 +15,7 @@ export interface Market {
   volume: number;
   participants: number;
   status: MarketStatus;
+  category: "Crypto" | "Sports" | "Politics" | "Entertainment";
 }
 
 // Extended market with additional details

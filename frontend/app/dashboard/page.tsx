@@ -5,15 +5,19 @@ import { ethers } from "ethers";
 import Header from "@/components/Header";
 import EnhancedStatCard from "@/components/dashboard/EnhancedStatCard";
 import TabNavigation from "@/components/dashboard/TabNavigation";
-import ActivityItem from "@/components/dashboard/ActivityItem";
+import ActivityFeed from "@/components/dashboard/ActivityFeed";
 import BetCard from "@/components/dashboard/BetCard";
 import AchievementCard from "@/components/dashboard/AchievementCard";
 import EmptyState from "@/components/dashboard/EmptyState";
 import ProgressRing from "@/components/dashboard/ProgressRing";
+import QuickActions from "@/components/dashboard/QuickActions";
+import NotificationAlert from "@/components/dashboard/NotificationAlert";
+import BetHistoryFilters, { type BetStatusFilter, type BetSortOption } from "@/components/dashboard/BetHistoryFilters";
 import { Target, Trophy, DollarSign, Wallet, TrendingUp, Award, Sparkles, Activity } from "lucide-react";
 import type { DashboardTab, RecentActivity } from "./types";
 import { PrizePredictionContract } from "../../app/ABIs/index";
 import PrizePoolPredictionABI from "../../app/ABIs/Prediction.json";
+import { exportBetsToCSV } from "./exportUtils";
 import Link from "next/link";
 
 interface UserStats {
@@ -50,6 +54,11 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [userAddress, setUserAddress] = useState("");
+  
+  // Filter and search states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<BetStatusFilter>("all");
+  const [sortOption, setSortOption] = useState<BetSortOption>("newest");
 
   useEffect(() => {
     connectAndFetchData();
@@ -198,10 +207,83 @@ export default function DashboardPage() {
   });
 };
 
+  // Calculate unclaimed prizes and closing soon bets
+  const unclaimedPrizes = activeBets.filter(bet => bet.status === "won" && !bet.claimed).length;
+  const closingSoonBets = activeBets.filter(bet => {
+    if (bet.status !== "active") return false;
+    const hoursUntilClose = (bet.endTime.getTime() - new Date().getTime()) / (1000 * 60 * 60);
+    return hoursUntilClose <= 24 && hoursUntilClose > 0;
+  }).length;
+
+  // Filter and sort bets
+  const getFilteredAndSortedBets = () => {
+    let filtered = [...activeBets];
+
+    // Apply status filter
+    if (statusFilter !== "all") {
+      filtered = filtered.filter(bet => bet.status === statusFilter);
+    }
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(bet => 
+        bet.question.toLowerCase().includes(query) ||
+        bet.selectedOption.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      switch (sortOption) {
+        case "newest":
+          return b.timestamp.getTime() - a.timestamp.getTime();
+        case "oldest":
+          return a.timestamp.getTime() - b.timestamp.getTime();
+        case "highest":
+          return parseFloat(b.entryFee) - parseFloat(a.entryFee);
+        case "lowest":
+          return parseFloat(a.entryFee) - parseFloat(b.entryFee);
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  };
+
+  const filteredBets = getFilteredAndSortedBets();
   const activeBetsOnly = activeBets.filter(bet => bet.status === "active" || bet.status === "closed");
   const winRate = userStats && userStats.totalPredictions > 0
     ? (userStats.correctPredictions / userStats.totalPredictions) * 100
     : 0;
+
+  // Export handler
+  const handleExport = () => {
+    if (!userStats) return;
+    
+    exportBetsToCSV(
+      activeBets.map(bet => ({
+        id: bet.id,
+        question: bet.question,
+        selectedOption: bet.selectedOption,
+        entryFee: bet.entryFee,
+        timestamp: bet.timestamp,
+        endTime: bet.endTime,
+        status: bet.status,
+        prizeAmount: bet.prizeAmount,
+        claimed: bet.claimed,
+        totalParticipants: bet.totalParticipants
+      })),
+      userStats,
+      userAddress
+    );
+  };
+
+  // Claim all handler (placeholder - would need contract integration)
+  const handleClaimAll = () => {
+    alert("Claim all functionality would be integrated with smart contract here");
+  };
 
   if (loading) {
     return (
@@ -267,30 +349,50 @@ export default function DashboardPage() {
       <main className="relative z-10 pt-32 pb-20 px-6">
         <div className="max-w-7xl mx-auto">
           {/* Header Section */}
-          <div className="mb-12">
-            <div className="flex items-center gap-3 mb-4">
-              <Sparkles className="w-8 h-8 text-cosmic-purple" />
-              <h1 className="text-5xl md:text-6xl font-bold text-white text-glow">
-                Dashboard
-              </h1>
+          <div className="mb-8 md:mb-12">
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-4">
+              <div className="flex items-center gap-3">
+                <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-cosmic-purple" />
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white text-glow">
+                  Dashboard
+                </h1>
+              </div>
+              {userAddress && (
+                <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full w-fit">
+                  <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                  <p className="text-text-muted text-xs sm:text-sm font-mono">
+                    {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
+                  </p>
+                </div>
+              )}
             </div>
-            <p className="text-text-muted text-lg mb-2">
+            <p className="text-text-muted text-base md:text-lg">
               Track your predictions and earnings
             </p>
-            {userAddress && (
-              <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/5 border border-white/10 rounded-full">
-                <div className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
-                <p className="text-text-muted text-sm font-mono">
-                  {userAddress.slice(0, 6)}...{userAddress.slice(-4)}
-                </p>
-              </div>
-            )}
           </div>
 
           {error && (
             <div className="mb-8 bg-red-500/20 border border-red-500 text-red-300 p-4 rounded-lg">
               {error}
             </div>
+          )}
+
+          {/* Quick Actions */}
+          {userStats && (
+            <QuickActions 
+              unclaimedPrizes={unclaimedPrizes}
+              onExport={handleExport}
+              onClaimAll={handleClaimAll}
+            />
+          )}
+
+          {/* Notification Alerts */}
+          {userStats && (
+            <NotificationAlert 
+              unclaimedPrizes={unclaimedPrizes}
+              closingSoonBets={closingSoonBets}
+              onClaimAll={handleClaimAll}
+            />
           )}
 
           {/* Statistics Cards */}
@@ -334,16 +436,16 @@ export default function DashboardPage() {
 
           {/* Performance Overview */}
           {userStats && (
-            <div className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-3xl p-8 mb-12">
-              <h2 className="text-2xl font-bold text-white mb-6 flex items-center gap-2">
-                <TrendingUp className="w-6 h-6 text-cosmic-purple" />
+            <div className="bg-linear-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/10 rounded-2xl md:rounded-3xl p-4 sm:p-6 md:p-8 mb-8 md:mb-12">
+              <h2 className="text-xl md:text-2xl font-bold text-white mb-4 md:mb-6 flex items-center gap-2">
+                <TrendingUp className="w-5 h-5 md:w-6 md:h-6 text-cosmic-purple" />
                 Performance Overview
               </h2>
               
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
                 {/* Current Streak */}
                 {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class */}
-                <div className="group relative bg-gradient-to-br from-orange-500/10 to-orange-600/5 border border-orange-500/20 rounded-2xl p-6 hover:border-orange-500/40 transition-all duration-300">
+                <div className="group relative bg-linear-to-br from-orange-500/10 to-orange-600/5 border border-orange-500/20 rounded-2xl p-6 hover:border-orange-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-3 rounded-xl bg-orange-400/20 group-hover:scale-110 transition-transform duration-300">
                       <TrendingUp className="w-6 h-6 text-orange-400" />
@@ -358,7 +460,7 @@ export default function DashboardPage() {
 
                 {/* Longest Streak */}
                 {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class */}
-                <div className="group relative bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-2xl p-6 hover:border-purple-500/40 transition-all duration-300">
+                <div className="group relative bg-linear-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-2xl p-6 hover:border-purple-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-3 rounded-xl bg-purple-400/20 group-hover:scale-110 transition-transform duration-300">
                       <Award className="w-6 h-6 text-purple-400" />
@@ -373,7 +475,7 @@ export default function DashboardPage() {
 
                 {/* Accuracy with Progress Ring */}
                 {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class */}
-                <div className="group relative bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-2xl p-6 hover:border-blue-500/40 transition-all duration-300">
+                <div className="group relative bg-linear-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-2xl p-6 hover:border-blue-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-text-muted text-sm mb-1">Accuracy</p>
@@ -398,7 +500,7 @@ export default function DashboardPage() {
 
                 {/* Total Points */}
                 {/* eslint-disable-next-line */}
-                <div className="group relative bg-gradient-to-br from-cosmic-purple/10 to-cosmic-blue/5 border border-cosmic-purple/20 rounded-2xl p-6 hover:border-cosmic-purple/40 transition-all duration-300">
+                <div className="group relative bg-linear-to-br from-cosmic-purple/10 to-cosmic-blue/5 border border-cosmic-purple/20 rounded-2xl p-6 hover:border-cosmic-purple/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-3 rounded-xl bg-cosmic-purple/20 group-hover:scale-110 transition-transform duration-300">
                       <Trophy className="w-6 h-6 text-cosmic-purple" />
@@ -466,9 +568,23 @@ export default function DashboardPage() {
                     <Trophy className="w-7 h-7 text-cosmic-purple" />
                     Bet History
                   </h2>
+                  
+                  {/* Filters */}
+                  {activeBets.length > 0 && (
+                    <BetHistoryFilters
+                      searchQuery={searchQuery}
+                      onSearchChange={setSearchQuery}
+                      statusFilter={statusFilter}
+                      onStatusFilterChange={setStatusFilter}
+                      sortOption={sortOption}
+                      onSortChange={setSortOption}
+                      resultsCount={filteredBets.length}
+                    />
+                  )}
+
                   <div className="space-y-4">
-                    {activeBets.length > 0 ? (
-                      activeBets.map((bet) => (
+                    {filteredBets.length > 0 ? (
+                      filteredBets.map((bet) => (
                         <BetCard
                           key={bet.id}
                           id={bet.id}
@@ -482,13 +598,19 @@ export default function DashboardPage() {
                           totalParticipants={bet.totalParticipants}
                         />
                       ))
-                    ) : (
+                    ) : activeBets.length === 0 ? (
                       <EmptyState
                         emoji="📊"
                         title="No Bet History"
                         description="Your prediction history will appear here once you start participating in markets."
                         actionText="Start Predicting"
                         actionHref="/markets"
+                      />
+                    ) : (
+                      <EmptyState
+                        emoji="🔍"
+                        title="No matching bets"
+                        description={`No bets found matching your search "${searchQuery}"`}
                       />
                     )}
                   </div>
@@ -585,11 +707,9 @@ export default function DashboardPage() {
                   <Activity className="w-6 h-6 text-cosmic-purple" />
                   Recent Activity
                 </h2>
-                <div className="space-y-3 max-h-[600px] overflow-y-auto scrollbar-hide">
+                <div className="max-h-[600px] overflow-y-auto scrollbar-hide">
                   {activities.length > 0 ? (
-                    activities.map((activity) => (
-                      <ActivityItem key={activity.id} activity={activity} />
-                    ))
+                    <ActivityFeed activities={activities} />
                   ) : (
                     <EmptyState
                       emoji="📭"
@@ -603,7 +723,7 @@ export default function DashboardPage() {
                 <button
                   onClick={connectAndFetchData}
                   disabled={loading}
-                  className="w-full mt-6 py-3 bg-gradient-to-r from-cosmic-purple/20 to-cosmic-blue/20 hover:from-cosmic-purple/30 hover:to-cosmic-blue/30 border border-cosmic-purple/50 rounded-xl text-white font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 group"
+                  className="w-full mt-6 py-3 bg-linear-to-r from-cosmic-purple/20 to-cosmic-blue/20 hover:from-cosmic-purple/30 hover:to-cosmic-blue/30 border border-cosmic-purple/50 rounded-xl text-white font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 group"
                 >
                   <span className="group-hover:rotate-180 transition-transform duration-500">
                     🔄
