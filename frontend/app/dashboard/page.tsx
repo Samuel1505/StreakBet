@@ -398,7 +398,7 @@ export default function DashboardPage() {
 
                 {/* Total Points */}
                 {/* eslint-disable-next-line */}
-                <div className="group relative bg-gradient-to-br from-cosmic-purple/10 to-cosmic-blue/5 border border-cosmic-purple/20 rounded-2xl p-6 hover:border-cosmic-purple/40 transition-all duration-300">
+                <div className="group relative bg-linear-to-br from-cosmic-purple/10 to-cosmic-blue/5 border border-cosmic-purple/20 rounded-2xl p-6 hover:border-cosmic-purple/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-3 rounded-xl bg-cosmic-purple/20 group-hover:scale-110 transition-transform duration-300">
                       <Trophy className="w-6 h-6 text-cosmic-purple" />
