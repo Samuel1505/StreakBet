@@ -5,7 +5,7 @@ import { ethers } from "ethers";
 import Header from "@/components/Header";
 import EnhancedStatCard from "@/components/dashboard/EnhancedStatCard";
 import TabNavigation from "@/components/dashboard/TabNavigation";
-import ActivityItem from "@/components/dashboard/ActivityItem";
+import ActivityFeed from "@/components/dashboard/ActivityFeed";
 import BetCard from "@/components/dashboard/BetCard";
 import AchievementCard from "@/components/dashboard/AchievementCard";
 import EmptyState from "@/components/dashboard/EmptyState";
@@ -375,6 +375,24 @@ export default function DashboardPage() {
             </div>
           )}
 
+          {/* Quick Actions */}
+          {userStats && (
+            <QuickActions 
+              unclaimedPrizes={unclaimedPrizes}
+              onExport={handleExport}
+              onClaimAll={handleClaimAll}
+            />
+          )}
+
+          {/* Notification Alerts */}
+          {userStats && (
+            <NotificationAlert 
+              unclaimedPrizes={unclaimedPrizes}
+              closingSoonBets={closingSoonBets}
+              onClaimAll={handleClaimAll}
+            />
+          )}
+
           {/* Statistics Cards */}
           {userStats && (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -548,9 +566,23 @@ export default function DashboardPage() {
                     <Trophy className="w-7 h-7 text-cosmic-purple" />
                     Bet History
                   </h2>
+                  
+                  {/* Filters */}
+                  {activeBets.length > 0 && (
+                    <BetHistoryFilters
+                      searchQuery={searchQuery}
+                      onSearchChange={setSearchQuery}
+                      statusFilter={statusFilter}
+                      onStatusFilterChange={setStatusFilter}
+                      sortOption={sortOption}
+                      onSortChange={setSortOption}
+                      resultsCount={filteredBets.length}
+                    />
+                  )}
+
                   <div className="space-y-4">
-                    {activeBets.length > 0 ? (
-                      activeBets.map((bet) => (
+                    {filteredBets.length > 0 ? (
+                      filteredBets.map((bet) => (
                         <BetCard
                           key={bet.id}
                           id={bet.id}
@@ -564,13 +596,19 @@ export default function DashboardPage() {
                           totalParticipants={bet.totalParticipants}
                         />
                       ))
-                    ) : (
+                    ) : activeBets.length === 0 ? (
                       <EmptyState
                         emoji="📊"
                         title="No Bet History"
                         description="Your prediction history will appear here once you start participating in markets."
                         actionText="Start Predicting"
                         actionHref="/markets"
+                      />
+                    ) : (
+                      <EmptyState
+                        emoji="🔍"
+                        title="No matching bets"
+                        description={`No bets found matching your search "${searchQuery}"`}
                       />
                     )}
                   </div>
@@ -667,11 +705,9 @@ export default function DashboardPage() {
                   <Activity className="w-6 h-6 text-cosmic-purple" />
                   Recent Activity
                 </h2>
-                <div className="space-y-3 max-h-[600px] overflow-y-auto scrollbar-hide">
+                <div className="max-h-[600px] overflow-y-auto scrollbar-hide">
                   {activities.length > 0 ? (
-                    activities.map((activity) => (
-                      <ActivityItem key={activity.id} activity={activity} />
-                    ))
+                    <ActivityFeed activities={activities} />
                   ) : (
                     <EmptyState
                       emoji="📭"
