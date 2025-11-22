@@ -10,10 +10,14 @@ import BetCard from "@/components/dashboard/BetCard";
 import AchievementCard from "@/components/dashboard/AchievementCard";
 import EmptyState from "@/components/dashboard/EmptyState";
 import ProgressRing from "@/components/dashboard/ProgressRing";
+import QuickActions from "@/components/dashboard/QuickActions";
+import NotificationAlert from "@/components/dashboard/NotificationAlert";
+import BetHistoryFilters, { type BetStatusFilter, type BetSortOption } from "@/components/dashboard/BetHistoryFilters";
 import { Target, Trophy, DollarSign, Wallet, TrendingUp, Award, Sparkles, Activity } from "lucide-react";
 import type { DashboardTab, RecentActivity } from "./types";
 import { PrizePredictionContract } from "../../app/ABIs/index";
 import PrizePoolPredictionABI from "../../app/ABIs/Prediction.json";
+import { exportBetsToCSV } from "./exportUtils";
 import Link from "next/link";
 
 interface UserStats {
@@ -50,6 +54,11 @@ export default function DashboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [userAddress, setUserAddress] = useState("");
+  
+  // Filter and search states
+  const [searchQuery, setSearchQuery] = useState("");
+  const [statusFilter, setStatusFilter] = useState<BetStatusFilter>("all");
+  const [sortOption, setSortOption] = useState<BetSortOption>("newest");
 
   useEffect(() => {
     connectAndFetchData();
@@ -198,10 +207,83 @@ export default function DashboardPage() {
   });
 };
 
+  // Calculate unclaimed prizes and closing soon bets
+  const unclaimedPrizes = activeBets.filter(bet => bet.status === "won" && !bet.claimed).length;
+  const closingSoonBets = activeBets.filter(bet => {
+    if (bet.status !== "active") return false;
+    const hoursUntilClose = (bet.endTime.getTime() - new Date().getTime()) / (1000 * 60 * 60);
+    return hoursUntilClose <= 24 && hoursUntilClose > 0;
+  }).length;
+
+  // Filter and sort bets
+  const getFilteredAndSortedBets = () => {
+    let filtered = [...activeBets];
+
+    // Apply status filter
+    if (statusFilter !== "all") {
+      filtered = filtered.filter(bet => bet.status === statusFilter);
+    }
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      const query = searchQuery.toLowerCase();
+      filtered = filtered.filter(bet => 
+        bet.question.toLowerCase().includes(query) ||
+        bet.selectedOption.toLowerCase().includes(query)
+      );
+    }
+
+    // Apply sorting
+    filtered.sort((a, b) => {
+      switch (sortOption) {
+        case "newest":
+          return b.timestamp.getTime() - a.timestamp.getTime();
+        case "oldest":
+          return a.timestamp.getTime() - b.timestamp.getTime();
+        case "highest":
+          return parseFloat(b.entryFee) - parseFloat(a.entryFee);
+        case "lowest":
+          return parseFloat(a.entryFee) - parseFloat(b.entryFee);
+        default:
+          return 0;
+      }
+    });
+
+    return filtered;
+  };
+
+  const filteredBets = getFilteredAndSortedBets();
   const activeBetsOnly = activeBets.filter(bet => bet.status === "active" || bet.status === "closed");
   const winRate = userStats && userStats.totalPredictions > 0
     ? (userStats.correctPredictions / userStats.totalPredictions) * 100
     : 0;
+
+  // Export handler
+  const handleExport = () => {
+    if (!userStats) return;
+    
+    exportBetsToCSV(
+      activeBets.map(bet => ({
+        id: bet.id,
+        question: bet.question,
+        selectedOption: bet.selectedOption,
+        entryFee: bet.entryFee,
+        timestamp: bet.timestamp,
+        endTime: bet.endTime,
+        status: bet.status,
+        prizeAmount: bet.prizeAmount,
+        claimed: bet.claimed,
+        totalParticipants: bet.totalParticipants
+      })),
+      userStats,
+      userAddress
+    );
+  };
+
+  // Claim all handler (placeholder - would need contract integration)
+  const handleClaimAll = () => {
+    alert("Claim all functionality would be integrated with smart contract here");
+  };
 
   if (loading) {
     return (
