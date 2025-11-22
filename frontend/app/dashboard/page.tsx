@@ -373,7 +373,7 @@ export default function DashboardPage() {
 
                 {/* Accuracy with Progress Ring */}
                 {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class */}
-                <div className="group relative bg-gradient-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-2xl p-6 hover:border-blue-500/40 transition-all duration-300">
+                <div className="group relative bg-linear-to-br from-blue-500/10 to-blue-600/5 border border-blue-500/20 rounded-2xl p-6 hover:border-blue-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between">
                     <div>
                       <p className="text-text-muted text-sm mb-1">Accuracy</p>
