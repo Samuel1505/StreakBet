@@ -358,7 +358,7 @@ export default function DashboardPage() {
 
                 {/* Longest Streak */}
                 {/* @ts-ignore - bg-gradient-to-br is correct Tailwind class */}
-                <div className="group relative bg-gradient-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-2xl p-6 hover:border-purple-500/40 transition-all duration-300">
+                <div className="group relative bg-linear-to-br from-purple-500/10 to-purple-600/5 border border-purple-500/20 rounded-2xl p-6 hover:border-purple-500/40 transition-all duration-300">
                   <div className="flex items-center justify-between mb-3">
                     <div className="p-3 rounded-xl bg-purple-400/20 group-hover:scale-110 transition-transform duration-300">
                       <Award className="w-6 h-6 text-purple-400" />
