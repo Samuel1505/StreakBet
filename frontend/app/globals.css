@@ -63,10 +63,12 @@ body {
   animation-delay: 1s;
 }
 
-@utility scrollbar-hide {
-  &::-webkit-scrollbar {
-    display: none;
-  }
+/* Custom scrollbar hiding utility */
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide {
   -ms-overflow-style: none;
   scrollbar-width: none;
 }
