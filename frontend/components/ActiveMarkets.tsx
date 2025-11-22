@@ -1,7 +1,6 @@
 "use client";
 
 import MarketCard from "./MarketCard";
-import CryptoTable from "./CryptoTable";
 import { ArrowRight } from "lucide-react";
 
 export default function ActiveMarkets() {
@@ -73,10 +72,6 @@ export default function ActiveMarkets() {
           </div>
         </div>
 
-        {/* Crypto trading table */}
-        <div className="mt-16">
-          <CryptoTable />
-        </div>
       </div>
     </section>
   );
