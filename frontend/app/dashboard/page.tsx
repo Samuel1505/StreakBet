@@ -603,7 +603,7 @@ export default function DashboardPage() {
                 <button
                   onClick={connectAndFetchData}
                   disabled={loading}
-                  className="w-full mt-6 py-3 bg-gradient-to-r from-cosmic-purple/20 to-cosmic-blue/20 hover:from-cosmic-purple/30 hover:to-cosmic-blue/30 border border-cosmic-purple/50 rounded-xl text-white font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 group"
+                  className="w-full mt-6 py-3 bg-linear-to-r from-cosmic-purple/20 to-cosmic-blue/20 hover:from-cosmic-purple/30 hover:to-cosmic-blue/30 border border-cosmic-purple/50 rounded-xl text-white font-semibold transition-all disabled:opacity-50 flex items-center justify-center gap-2 group"
                 >
                   <span className="group-hover:rotate-180 transition-transform duration-500">
                     🔄
