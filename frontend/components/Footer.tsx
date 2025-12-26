@@ -20,7 +20,10 @@ export default function Footer() {
   ];
 
   return (
-    <footer className="relative py-12 px-6 bg-cosmic-dark border-t border-white/10">
+    <footer className="relative py-16 px-6 bg-background-lighter border-t border-white/10 overflow-hidden">
+      {/* Aurora background */}
+      <div className="absolute top-0 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
+      <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-cyan/5 rounded-full blur-3xl" />
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Navigation links */}
         <nav className="flex flex-wrap justify-center gap-8 mb-8">
@@ -28,7 +31,7 @@ export default function Footer() {
             <a
               key={link.label}
               href={link.href}
-              className="text-white hover:text-cosmic-blue transition-colors duration-300 text-sm font-medium"
+              className="text-white hover:text-accent-bright transition-colors duration-300 text-sm font-semibold"
             >
               {link.label}
             </a>
@@ -42,18 +45,20 @@ export default function Footer() {
               key={social.label}
               href={social.href}
               aria-label={social.label}
-              className="flex items-center justify-center w-10 h-10 rounded-full bg-white/5 border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group"
+              className="flex items-center justify-center w-12 h-12 rounded-xl glass border border-white/10 hover:glass-strong hover:border-accent/30 hover:scale-110 transition-all duration-300 group"
             >
-              <social.icon className="w-5 h-5 text-white/70 group-hover:text-white transition-colors duration-300" />
+              <social.icon className="w-5 h-5 text-text-muted group-hover:text-accent-bright transition-colors duration-300" />
             </a>
           ))}
         </div>
 
-        {/* Copyright */}
-        <div className="text-center">
-          <p className="text-text-muted text-sm">
-            Design with love © 2025. All right reserved
-          </p>
+        {/* Brand and copyright */}
+        <div className="text-center space-y-4">
+          <div className="text-2xl font-bold">
+            <span className="bg-linear-to-r from-accent-bright via-cyan-light to-primary-light bg-clip-text text-transparent">
+              StreakBet
+            </span>
+          </div>
         </div>
       </div>
     </footer>

@@ -12,13 +12,13 @@ interface FloatingTokenProps {
 export default function FloatingToken({ src, alt, size, className = "" }: FloatingTokenProps) {
   return (
     <div 
-      className={`absolute animate-float ${className}`}
+      className={`absolute animate-float-slow hover:scale-110 transition-transform duration-500 ${className}`}
       style={{
-        animation: `float ${3 + Math.random() * 2}s ease-in-out infinite`,
+        animation: `float ${5 + Math.random() * 3}s ease-in-out infinite`,
       }}
     >
-      <div className="relative">
-        <div className="absolute inset-0 bg-cosmic-purple/20 blur-xl rounded-full" />
+      <div className="relative group">
+        <div className="absolute inset-0 bg-accent/20 blur-2xl rounded-full opacity-70 group-hover:opacity-100 transition-opacity duration-500" />
         <Image
           src={src}
           alt={alt}
