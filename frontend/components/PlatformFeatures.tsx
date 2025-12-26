@@ -80,15 +80,15 @@ export default function PlatformFeatures() {
               </div>
               
               {/* Content */}
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cosmic-blue transition-colors duration-300">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-5 text-glow">
                 {feature.title}
               </h3>
-              <p className="text-text-muted leading-relaxed text-sm">
+              <p className="text-text-muted text-base leading-relaxed">
                 {feature.description}
               </p>
               
               {/* Hover glow effect */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-500 rounded-2xl pointer-events-none`} />
+              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-500 rounded-3xl pointer-events-none`} />
             </div>
           ))}
         </div>
