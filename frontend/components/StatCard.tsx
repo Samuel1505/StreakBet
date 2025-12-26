@@ -17,7 +17,7 @@ export default function StatCard({ icon: Icon, value, label, gradient, delay = 0
       style={{ animationDelay: `${delay}s` }}
     >
       {/* Enhanced glow effect */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-30 blur-2xl transition-all duration-500 rounded-3xl scale-95 group-hover:scale-105`} />
+      <div className={`absolute inset-0 bg-linear-to-br ${gradient} opacity-0 group-hover:opacity-30 blur-2xl transition-all duration-500 rounded-3xl scale-95 group-hover:scale-105`} />
       
       {/* Card content with glass effect */}
       <div className="relative glass-strong rounded-3xl p-10 transition-all duration-300 group-hover:border-white/25 hover:transform hover:scale-105 hover:-translate-y-2 shadow-xl">
