@@ -63,7 +63,7 @@ export default function EnhancedStatCard({
       </div>
       
       {/* Decorative corner accent */}
-      <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-accent/10 to-transparent rounded-bl-3xl rounded-tr-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute top-0 right-0 w-24 h-24 bg-linear-to-br from-accent/10 to-transparent rounded-bl-3xl rounded-tr-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
     </div>
   );
 }
