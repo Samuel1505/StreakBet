@@ -88,7 +88,7 @@ export default function PlatformFeatures() {
               </p>
               
               {/* Hover glow effect */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-500 rounded-3xl pointer-events-none`} />
+              <div className={`absolute inset-0 bg-linear-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-500 rounded-3xl pointer-events-none`} />
             </div>
           ))}
         </div>
