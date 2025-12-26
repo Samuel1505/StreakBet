@@ -22,18 +22,18 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="relative py-32 px-6 bg-cosmic-dark overflow-hidden">
-      {/* Animated background gradient */}
-      <div className="absolute inset-0 cosmic-gradient opacity-50" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-cosmic-purple/5 rounded-full blur-3xl animate-pulse" />
+    <section className="relative py-32 px-6 bg-background overflow-hidden">
+      {/* Aurora background */}
+      <div className="absolute inset-0 aurora-gradient" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[1000px] h-[1000px] bg-accent/8 rounded-full blur-3xl animate-pulse-glow" />
       
       <div className="relative z-10 max-w-7xl mx-auto">
         {/* Section header */}
-        <div className="text-center mb-20">
-          <h2 className="text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 text-glow">
+        <div className="text-center mb-24">
+          <h2 className="text-5xl md:text-6xl lg:text-8xl font-bold text-white mb-8 text-glow-accent">
             How it Works
           </h2>
-          <p className="text-lg md:text-xl text-text-muted max-w-3xl mx-auto leading-relaxed">
+          <p className="text-xl md:text-2xl text-text-muted max-w-4xl mx-auto leading-relaxed font-light">
             Simply create a market by setting your event question, stake tokens on the outcome you believe in, and once the event resolves, winners automatically claim their fair share of the pooled rewards
           </p>
         </div>
