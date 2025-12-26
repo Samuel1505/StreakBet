@@ -22,7 +22,7 @@ export default function StatCard({ icon: Icon, value, label, gradient, delay = 0
       {/* Card content with glass effect */}
       <div className="relative glass-strong rounded-3xl p-10 transition-all duration-300 group-hover:border-white/25 hover:transform hover:scale-105 hover:-translate-y-2 shadow-xl">
         {/* Icon with enhanced gradient */}
-        <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${gradient} mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
+        <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-linear-to-br ${gradient} mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
           <Icon className="w-10 h-10 text-white" />
         </div>
         
