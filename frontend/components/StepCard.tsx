@@ -12,7 +12,7 @@ export default function StepCard({ number, title, description, isLast = false }:
     <div className="relative group">
       {/* Connecting line (hidden on mobile, shown on desktop for non-last items) */}
       {!isLast && (
-        <div className="hidden md:block absolute top-12 left-[60%] w-full h-1 bg-gradient-to-r from-accent via-cyan to-transparent opacity-50" />
+        <div className="hidden md:block absolute top-12 left-[60%] w-full h-1 bg-linear-to-r from-accent via-cyan to-transparent opacity-50" />
       )}
       
       {/* Card */}
@@ -31,7 +31,7 @@ export default function StepCard({ number, title, description, isLast = false }:
         </p>
         
         {/* Decorative corner accent */}
-        <div className="absolute inset-0 bg-gradient-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none" />
+        <div className="absolute inset-0 bg-linear-to-br from-accent/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none" />
       </div>
     </div>
   );
