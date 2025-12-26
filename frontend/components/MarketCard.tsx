@@ -14,7 +14,7 @@ interface MarketCardProps {
 
 export default function MarketCard({ image, attribution = "", title, yesVotes, noVotes, isLocal = false }: MarketCardProps) {
   return (
-    <div className="relative flex-shrink-0 w-[320px] md:w-[380px] h-[240px] rounded-2xl overflow-hidden group cursor-pointer snap-start">
+    <div className="relative shrink-0 w-[320px] md:w-[380px] h-[240px] rounded-2xl overflow-hidden group cursor-pointer snap-start">
       {/* Background image */}
       <div className="absolute inset-0">
         {isLocal ? (
