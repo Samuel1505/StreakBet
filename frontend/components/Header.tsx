@@ -23,7 +23,7 @@ export default function Header() {
       <nav className="max-w-7xl mx-auto flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <div className="text-2xl font-bold">
-            <span className="bg-gradient-to-r from-accent-bright via-cyan-light to-primary-light bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-accent-bright via-cyan-light to-primary-light bg-clip-text text-transparent">
               StreakBet
             </span>
           </div>
@@ -43,7 +43,7 @@ export default function Header() {
             >
               {link.label}
               {isActive(link.href) && (
-                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-gradient-to-r from-accent to-cyan rounded-full" />
+                <span className="absolute bottom-0 left-0 right-0 h-0.5 bg-linear-to-r from-accent to-cyan rounded-full" />
               )}
             </Link>
           ))}
