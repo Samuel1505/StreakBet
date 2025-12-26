@@ -75,20 +75,20 @@ export default function PlatformFeatures() {
               className="group relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 hover:bg-white/10 hover:border-white/20 transition-all duration-300 hover:transform hover:-translate-y-2"
             >
               {/* Icon */}
-              <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br ${feature.gradient} mb-6 group-hover:scale-110 transition-transform duration-300`}>
+              <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-linear-to-br ${feature.gradient} mb-6 group-hover:scale-110 transition-transform duration-300`}>
                 <feature.icon className="w-8 h-8 text-white" />
               </div>
               
               {/* Content */}
-              <h3 className="text-xl font-bold text-white mb-3 group-hover:text-cosmic-blue transition-colors duration-300">
+              <h3 className="text-xl md:text-2xl font-bold text-white mb-5 text-glow">
                 {feature.title}
               </h3>
-              <p className="text-text-muted leading-relaxed text-sm">
+              <p className="text-text-muted text-base leading-relaxed">
                 {feature.description}
               </p>
               
               {/* Hover glow effect */}
-              <div className={`absolute inset-0 bg-gradient-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-500 rounded-2xl pointer-events-none`} />
+              <div className={`absolute inset-0 bg-linear-to-br ${feature.gradient} opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-500 rounded-3xl pointer-events-none`} />
             </div>
           ))}
         </div>
