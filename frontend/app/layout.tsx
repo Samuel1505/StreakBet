@@ -1,12 +1,9 @@
 import type { Metadata } from "next";
-import { Rubik } from "next/font/google";
+import "@fontsource/space-grotesk/400.css";
+import "@fontsource/space-grotesk/500.css";
+import "@fontsource/space-grotesk/600.css";
+import "@fontsource/space-grotesk/700.css";
 import "./globals.css";
-
-const rubik = Rubik({
-  variable: "--font-rubik",
-  subsets: ["latin"],
-  weight: ["400", "500", "700"],
-});
 
 import { headers } from 'next/headers' // added
 import ContextProvider from './context/index'
@@ -27,7 +24,7 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <body className={`${rubik.variable} antialiased`}>
+      <body className="antialiased">
         <ContextProvider cookies={cookies}>
           {children}
 
