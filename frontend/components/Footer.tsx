@@ -55,13 +55,10 @@ export default function Footer() {
         {/* Brand and copyright */}
         <div className="text-center space-y-4">
           <div className="text-2xl font-bold">
-            <span className="bg-gradient-to-r from-accent-bright via-cyan-light to-primary-light bg-clip-text text-transparent">
+            <span className="bg-linear-to-r from-accent-bright via-cyan-light to-primary-light bg-clip-text text-transparent">
               StreakBet
             </span>
           </div>
-          <p className="text-text-muted text-sm">
-            Designed with ❤️ © 2025. All rights reserved
-          </p>
         </div>
       </div>
     </footer>
