@@ -16,25 +16,28 @@ export default function StatCard({ icon: Icon, value, label, gradient, delay = 0
       className="group relative"
       style={{ animationDelay: `${delay}s` }}
     >
-      {/* Glow effect on hover */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-20 blur-xl transition-opacity duration-500 rounded-2xl`} />
+      {/* Enhanced glow effect */}
+      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-30 blur-2xl transition-all duration-500 rounded-3xl scale-95 group-hover:scale-105`} />
       
-      {/* Card content */}
-      <div className="relative bg-white/5 backdrop-blur-sm border border-white/10 rounded-2xl p-8 transition-all duration-300 group-hover:border-white/20 group-hover:bg-white/10 group-hover:transform group-hover:scale-105">
-        {/* Icon with gradient background */}
-        <div className={`inline-flex items-center justify-center w-16 h-16 rounded-xl bg-gradient-to-br ${gradient} mb-6 group-hover:scale-110 transition-transform duration-300`}>
-          <Icon className="w-8 h-8 text-white" />
+      {/* Card content with glass effect */}
+      <div className="relative glass-strong rounded-3xl p-10 transition-all duration-300 group-hover:border-white/25 hover:transform hover:scale-105 hover:-translate-y-2 shadow-xl">
+        {/* Icon with enhanced gradient */}
+        <div className={`inline-flex items-center justify-center w-20 h-20 rounded-2xl bg-gradient-to-br ${gradient} mb-8 group-hover:scale-110 group-hover:rotate-3 transition-all duration-300 shadow-lg`}>
+          <Icon className="w-10 h-10 text-white" />
         </div>
         
-        {/* Stats */}
-        <div className="space-y-2">
-          <div className="text-4xl md:text-5xl font-bold text-white text-glow">
+        {/* Stats with better hierarchy */}
+        <div className="space-y-3">
+          <div className="text-5xl md:text-6xl font-bold text-white text-glow-accent">
             {value}
           </div>
-          <div className="text-text-muted text-sm md:text-base">
+          <div className="text-text-muted text-base md:text-lg font-medium">
             {label}
           </div>
         </div>
+        
+        {/* Decorative corner accent */}
+        <div className="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-white/5 to-transparent rounded-bl-3xl rounded-tr-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
       </div>
     </div>
   );
