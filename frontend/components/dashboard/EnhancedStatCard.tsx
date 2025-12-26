@@ -30,7 +30,7 @@ export default function EnhancedStatCard({
   return (
     <div className="group relative glass-strong rounded-3xl p-8 hover:border-white/25 transition-all duration-300 hover:transform hover:scale-105 hover:-translate-y-2 overflow-hidden shadow-xl">
       {/* Enhanced glow effect on hover */}
-      <div className={`absolute inset-0 bg-gradient-to-br ${gradient} opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-500 rounded-3xl pointer-events-none`} />
+      <div className={`absolute inset-0 bg-linear-to-br ${gradient} opacity-0 group-hover:opacity-20 blur-2xl transition-opacity duration-500 rounded-3xl pointer-events-none`} />
       
       <div className="relative z-10">
         <div className="flex items-start justify-between mb-4">
