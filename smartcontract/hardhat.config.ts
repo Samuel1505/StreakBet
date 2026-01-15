@@ -28,10 +28,10 @@ const config: HardhatUserConfig = {
       accounts: ACCOUNT_PRIVATE_KEY ? [`0x${ACCOUNT_PRIVATE_KEY}`] : [],
       chainId: 11155111,
     },
-    baseSepolia: {
-      url: "https://sepolia.base.org",
+    base: {
+      url: "https://mainnet.base.org",
       accounts: ACCOUNT_PRIVATE_KEY ? [`0x${ACCOUNT_PRIVATE_KEY}`] : [],
-      chainId: 84532,
+      chainId: 8453,
     },
   },
   
@@ -39,11 +39,11 @@ const config: HardhatUserConfig = {
   apiKey: ETHERSCAN_API_KEY, // single key now, not per network
   customChains: [
     {
-      network: "baseSepolia",
-      chainId: 84532,
+      network: "base",
+      chainId: 8453,
       urls: {
-        apiURL: "https://api-sepolia.basescan.org/api",
-        browserURL: "https://sepolia.basescan.org",
+        apiURL: "https://api.basescan.org/api",
+        browserURL: "https://basescan.org",
       },
     },
   ],
